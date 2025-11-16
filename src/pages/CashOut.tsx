@@ -9,6 +9,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
 import { toast } from 'sonner'
+import { useNavigate } from 'react-router-dom'
 
 const cashOutSchema = z.object({
   receiverPhone: z.string().min(1, "Agent phone number is required").regex(/^01[3-9]\d{8}$/, "Please enter a valid Bangladeshi phone number"),
@@ -19,6 +20,7 @@ const cashOutSchema = z.object({
 type CashOutFormData = z.infer<typeof cashOutSchema>
 
 const CashOut = () => {
+  const navigate = useNavigate()
   const { user } = useAuth()
   const { cashOut, loading, error, lastCashOut, clearError } = useTransactions()
 
@@ -71,13 +73,22 @@ const CashOut = () => {
   }
 
   return (
-    <div className="max-w-md mx-auto">
-      <div className="mb-6">
-        <h2 className="text-2xl font-bold flex items-center gap-2">
+    <div className="min-h-screen flex items-center justify-center px-4">
+      <div className="max-w-md w-full">
+      <Button
+        variant="ghost"
+        onClick={() => navigate('/dashboard')}
+        className="mb-4 -ml-2 flex items-center gap-2 text-black hover:text-black bg-gray-100 dark:bg-gray-800"
+      >
+        <Icon icon="solar:alt-arrow-left-linear" className="h-5 w-5 text-black" />
+        <span className="text-black">Back</span>
+      </Button>
+      <div className="mb-6 mt-6 text-center">
+        <h2 className="text-2xl font-bold flex items-center justify-center gap-2">
           <Icon icon="solar:arrow-down-left" className="h-5 w-5" />
           Cash Out
         </h2>
-        <p className="text-muted-foreground mt-2">Cash out to an agent with your password</p>
+        <p className="text-muted-foreground mt-4 mb-4 text-left">Cash out to an agent with your password</p>
       </div>
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
         <CustomTextFieldComponent
@@ -139,6 +150,7 @@ const CashOut = () => {
           {loading ? "Processing..." : "Cash Out"}
         </Button>
       </form>
+      </div>
     </div>
   )
 }

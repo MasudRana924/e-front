@@ -9,16 +9,58 @@ const CustomTextField = styled(TextField)(() => ({
     height: '56px',
     '& fieldset': {
       borderColor: '#DBDBDB', // gray color for initial state
+      borderWidth: '1px', // Decreased border width
     },
     '&:hover fieldset': {
       borderColor: '#DBDBDB', // gray color on hover
+      borderWidth: '1px', // Decreased border width
     },
     '&.Mui-focused fieldset': {
       borderColor: '#DBDBDB', // black color when focused/clicked
+      borderWidth: '1px', // Decreased border width
+    },
+    '& input': {
+      color: 'inherit',
     },
   },
   '& .MuiInputLabel-root': {
-    color: 'black',
+    color: 'black !important',
+    '&.Mui-focused': {
+      color: 'black !important',
+    },
+    '&.Mui-error': {
+      color: 'black !important',
+    },
+  },
+  '@media (prefers-color-scheme: dark)': {
+    '& .MuiInputLabel-root': {
+      color: 'white !important',
+      '&.Mui-focused': {
+        color: 'white !important',
+      },
+      '&.Mui-error': {
+        color: 'white !important',
+      },
+    },
+    '& .MuiOutlinedInput-root': {
+      '& input': {
+        color: 'white !important',
+      },
+    },
+  },
+  '.dark & .MuiInputLabel-root': {
+    color: 'white !important',
+    '&.Mui-focused': {
+      color: 'white !important',
+    },
+    '&.Mui-error': {
+      color: 'white !important',
+    },
+  },
+  '.dark & .MuiOutlinedInput-root': {
+    '& input': {
+      color: 'white !important',
+    },
   },
 }))
 

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Card, CardContent } from '../components/ui/card'
 import { Button } from '../components/ui/button'
@@ -12,15 +12,17 @@ const Dashboard = () => {
   const navigate = useNavigate()
   const [showBalance, setShowBalance] = useState(false)
   const [currentTime, setCurrentTime] = useState(new Date())
+  const hasFetched = useRef(false)
 
   // Get user data from Redux store
   const { user } = useSelector((state: RootState) => state.auth)
-  console.log("user",user)
   // Get dashboard data from Redux store
-  const { userStats, loading, error, fetchUserStats } = useDashboard()
+  const { error, fetchUserStats, balance, balanceLoading, balanceStatus, fetchBalance } = useDashboard()
 
-  // Fetch user stats from API using Redux
+  // Fetch balance from API when dashboard loads
   useEffect(() => {
+    if (hasFetched.current) return
+    
     const token = localStorage.getItem("authToken");
     
     if (!token) {
@@ -29,6 +31,8 @@ const Dashboard = () => {
       return
     }
 
+    hasFetched.current = true
+    fetchBalance()
     fetchUserStats()
 
     const timer = setInterval(() => {
@@ -36,7 +40,8 @@ const Dashboard = () => {
     }, 1000)
 
     return () => clearInterval(timer)
-  }, [navigate, fetchUserStats])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   // Handle authentication errors
   useEffect(() => {
@@ -56,7 +61,7 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
+      <div className="w-8/12 mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Welcome Section */}
         <div className="mb-8">
           <h2 className="text-2xl font-bold text-foreground mb-2">
@@ -73,10 +78,10 @@ const Dashboard = () => {
                 <p className="text-blue-100 text-sm">Available Balance</p>
                 <div className="flex items-center space-x-2">
                   <h3 className="text-3xl font-bold">
-                    {loading ? (
+                    {balanceLoading ? (
                       <div className="animate-pulse bg-white/20 h-8 w-32 rounded"></div>
                     ) : showBalance ? (
-                      `৳${userStats.balance.toLocaleString()}`
+                      `৳${balance.toLocaleString()}`
                     ) : (
                       '৳••••••'
                     )}
@@ -86,7 +91,7 @@ const Dashboard = () => {
                     size="sm"
                     onClick={() => setShowBalance(!showBalance)}
                     className="text-white hover:bg-white/20"
-                    disabled={loading}
+                    disabled={balanceLoading}
                   >
                     {showBalance ? <Icon icon="solar:eye-closed-bold" className="h-4 w-4" /> : <Icon icon="solar:eye-bold" className="h-4 w-4" />}
                   </Button>
@@ -96,8 +101,8 @@ const Dashboard = () => {
                 <Badge className="bg-white/20 text-white border-0">
                   {user?.role || 'USER'}
                 </Badge>
-                <Badge className={`border-0 ${userStats.walletStatus === "active" ? "bg-green-500" : "bg-red-500"}`}>
-                  {userStats.walletStatus.toUpperCase()}
+                <Badge className={`border-0 ${balanceStatus === "ACTIVE" ? "bg-green-500" : "bg-red-500"}`}>
+                  {balanceStatus}
                 </Badge>
               </div>
             </div>
@@ -108,92 +113,50 @@ const Dashboard = () => {
           </CardContent>
         </Card>
 
+        {/* Services Section */}
+        <div className="mb-8">
+          <h3 className="text-xl font-bold mb-4">Services</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
+            {/* Send Money */}
+            <Card className="cursor-pointer hover:shadow-lg transition-shadow" onClick={() => navigate('/dashboard/send')}>
+              <CardContent className="p-3 text-center">
+                <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900/20 rounded-lg flex items-center justify-center mx-auto mb-2">
+                  <Icon icon="solar:plain-2-bold" className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                </div>
+                <h4 className="font-semibold text-sm">Send Money</h4>
+              </CardContent>
+            </Card>
 
-        {/* Transaction Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-          {/* Total Transactions */}
-          <Card className="bg-card border border-border shadow-md">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-muted-foreground">Total Transactions</p>
-                  <p className="text-2xl font-bold text-foreground">
-                    {loading ? (
-                      <div className="animate-pulse bg-muted h-6 w-16 rounded"></div>
-                    ) : (
-                      userStats.totalTransactions
-                    )}
-                  </p>
+            {/* Add Money */}
+            <Card className="cursor-pointer hover:shadow-lg transition-shadow" onClick={() => navigate('/dashboard/add-money')}>
+              <CardContent className="p-3 text-center">
+                <div className="w-10 h-10 bg-green-100 dark:bg-green-900/20 rounded-lg flex items-center justify-center mx-auto mb-2">
+                  <Icon icon="solar:card-bold" className="h-5 w-5 text-green-600 dark:text-green-400" />
                 </div>
-                <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center">
-                  <Icon icon="solar:history-bold" className="h-6 w-6 text-primary" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+                <h4 className="font-semibold text-sm">Add Money</h4>
+              </CardContent>
+            </Card>
 
-          {/* Add Money Stats */}
-          <Card className="bg-card border border-border shadow-md">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-muted-foreground">Add Money</p>
-                  <p className="text-2xl font-bold text-foreground">
-                    {loading ? (
-                      <div className="animate-pulse bg-muted h-6 w-16 rounded"></div>
-                    ) : (
-                      userStats.transactionTypeStats["add-money"]
-                    )}
-                  </p>
+            {/* Cash Out */}
+            <Card className="cursor-pointer hover:shadow-lg transition-shadow" onClick={() => navigate('/dashboard/cash-out')}>
+              <CardContent className="p-3 text-center">
+                <div className="w-10 h-10 bg-orange-100 dark:bg-orange-900/20 rounded-lg flex items-center justify-center mx-auto mb-2">
+                  <Icon icon="solar:arrow-left-down-bold" className="h-5 w-5 text-orange-600 dark:text-orange-400" />
                 </div>
-                <div className="w-12 h-12 bg-green-100 dark:bg-green-900/20 rounded-xl flex items-center justify-center">
-                  <Icon icon="solar:add-circle-bold" className="h-6 w-6 text-green-600 dark:text-green-400" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+                <h4 className="font-semibold text-sm">Cash Out</h4>
+              </CardContent>
+            </Card>
 
-          {/* Send Money Stats */}
-          <Card className="bg-card border border-border shadow-md">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-muted-foreground">Send Money</p>
-                  <p className="text-2xl font-bold text-foreground">
-                    {loading ? (
-                      <div className="animate-pulse bg-muted h-6 w-16 rounded"></div>
-                    ) : (
-                      userStats.transactionTypeStats["send-money"]
-                    )}
-                  </p>
+            {/* Withdraw Money */}
+            <Card className="cursor-pointer hover:shadow-lg transition-shadow" onClick={() => navigate('/dashboard/withdraw')}>
+              <CardContent className="p-3 text-center">
+                <div className="w-10 h-10 bg-purple-100 dark:bg-purple-900/20 rounded-lg flex items-center justify-center mx-auto mb-2">
+                  <Icon icon="solar:arrow-right-down-bold" className="h-5 w-5 text-purple-600 dark:text-purple-400" />
                 </div>
-                <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/20 rounded-xl flex items-center justify-center">
-                  <Icon icon="solar:arrow-right-up-bold" className="h-6 w-6 text-blue-600 dark:text-blue-400" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Cash Out Stats */}
-          <Card className="bg-card border border-border shadow-md">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-muted-foreground">Cash Out</p>
-                  <p className="text-2xl font-bold text-foreground">
-                    {loading ? (
-                      <div className="animate-pulse bg-muted h-6 w-16 rounded"></div>
-                    ) : (
-                      userStats.transactionTypeStats["cash-out"]
-                    )}
-                  </p>
-                </div>
-                <div className="w-12 h-12 bg-orange-100 dark:bg-orange-900/20 rounded-xl flex items-center justify-center">
-                  <Icon icon="solar:arrow-left-down-bold" className="h-6 w-6 text-orange-600 dark:text-orange-400" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+                <h4 className="font-semibold text-sm">Withdraw Money</h4>
+              </CardContent>
+            </Card>
+          </div>
         </div>
 
         {/* Promotional Cards */}

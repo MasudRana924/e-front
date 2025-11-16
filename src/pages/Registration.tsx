@@ -101,7 +101,7 @@ export function SignupPage() {
             <Icon icon="solar:wallet" className="h-8 w-8 text-accent" />
           </div>
           <CardTitle className="text-2xl font-bold">Create Account</CardTitle>
-          <CardDescription>Join E-Wallet MFS today</CardDescription>
+          <CardDescription className="text-left mt-4 mb-4">Join E-Wallet MFS today</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">

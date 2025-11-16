@@ -9,6 +9,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
 import { toast } from 'sonner'
+import { useNavigate } from 'react-router-dom'
 
 const withdrawMoneySchema = z.object({
   amount: z.string().min(1, "Amount is required").refine((val) => !isNaN(Number(val)) && Number(val) > 0, "Amount must be a positive number"),
@@ -19,6 +20,7 @@ const withdrawMoneySchema = z.object({
 type WithdrawMoneyFormData = z.infer<typeof withdrawMoneySchema>
 
 const WithdrawMoney = () => {
+  const navigate = useNavigate()
   const { user } = useAuth()
   const { withdrawMoney, loading, error, lastWithdraw, clearError } = useTransactions()
 
@@ -71,13 +73,22 @@ const WithdrawMoney = () => {
   }
 
   return (
-    <div className="max-w-md mx-auto">
-      <div className="mb-6">
-        <h2 className="text-2xl font-bold flex items-center gap-2">
+    <div className="min-h-screen flex items-center justify-center px-4">
+      <div className="max-w-md w-full">
+      <Button
+        variant="ghost"
+        onClick={() => navigate('/dashboard')}
+        className="mb-4 -ml-2 flex items-center gap-2 text-black hover:text-black bg-gray-100 dark:bg-gray-800"
+      >
+        <Icon icon="solar:alt-arrow-left-linear" className="h-5 w-5 text-black" />
+        <span className="text-black">Back</span>
+      </Button>
+      <div className="mb-6 mt-6 text-center">
+        <h2 className="text-2xl font-bold flex items-center justify-center gap-2">
           <Icon icon="solar:arrow-down-right" className="h-5 w-5" />
           Withdraw Money
         </h2>
-        <p className="text-muted-foreground mt-2">Withdraw money from your wallet</p>
+        <p className="text-muted-foreground mt-4 mb-4 text-left">Withdraw money from your wallet</p>
       </div>
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
         <CustomTextFieldComponent
@@ -139,6 +150,7 @@ const WithdrawMoney = () => {
           {loading ? "Processing..." : "Withdraw Money"}
         </Button>
       </form>
+      </div>
     </div>
   )
 }

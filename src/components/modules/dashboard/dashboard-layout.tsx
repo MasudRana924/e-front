@@ -6,7 +6,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "../../ui/avatar"
 import { Badge } from "../../ui/badge"
 import { Sheet, SheetContent, SheetTrigger } from "../../ui/sheet"
 import { Icon } from "@iconify/react"
-import { Link } from "react-router-dom"
+import { Link, useLocation } from "react-router-dom"
 import { useAuth } from "../../../redux/features/auth/auth.api"
 
 interface DashboardLayoutProps {
@@ -48,6 +48,11 @@ const roleColors = {
 export function DashboardLayout({ children }: DashboardLayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const { user } = useAuth()
+  const location = useLocation()
+  
+  // Hide sidebar on dashboard route and form routes
+  const hideSidebarRoutes = ['/dashboard', '/dashboard/send', '/dashboard/add-money', '/dashboard/withdraw', '/dashboard/cash-out']
+  const isDashboardRoute = hideSidebarRoutes.includes(location.pathname)
 
   if (!user) {
     return null; // This should not happen as ProtectedRoute should handle this
@@ -79,7 +84,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
               variant="ghost"
               className="w-full justify-start gap-4 h-14 text-lg font-medium text-muted-foreground hover:text-foreground hover:bg-accent"
             >
-              <Icon icon={item.icon} className="w-16 h-16" />
+              <Icon icon={item.icon} className="w-12 h-12" />
               {item.label}
             </Button>
           </Link>
@@ -109,34 +114,40 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Desktop Sidebar */}
-      <div className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
-        <Sidebar />
-      </div>
+      {/* Desktop Sidebar - Hide on dashboard route */}
+      {!isDashboardRoute && (
+        <div className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
+          <Sidebar />
+        </div>
+      )}
 
       {/* Mobile Sidebar */}
-      <Sheet open={sidebarOpen} onOpenChange={setSidebarOpen}>
-        <SheetContent side="left" className="p-0 w-72">
-          <Sidebar />
-        </SheetContent>
-      </Sheet>
+      {!isDashboardRoute && (
+        <Sheet open={sidebarOpen} onOpenChange={setSidebarOpen}>
+          <SheetContent side="left" className="p-0 w-72">
+            <Sidebar />
+          </SheetContent>
+        </Sheet>
+      )}
 
       {/* Main Content */}
-      <div className="lg:pl-72">
-        {/* Header */}
-        <header className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4  bg-card px-4  sm:gap-x-6 sm:px-6 lg:px-8">
-          <Sheet>
-            <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="lg:hidden" onClick={() => setSidebarOpen(true)}>
-                <Icon icon="solar:hamburger-menu-bold" className="w-12 h-12" />
-                <span className="sr-only">Open sidebar</span>
-              </Button>
-            </SheetTrigger>
-          </Sheet>
-        </header>
+      <div className={isDashboardRoute ? "" : "lg:pl-72"}>
+        {/* Header - Hide on dashboard route */}
+        {!isDashboardRoute && (
+          <header className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 bg-card px-4 sm:gap-x-6 sm:px-6 lg:px-8 !border-none shadow-none">
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button variant="ghost" size="icon" className="lg:hidden" onClick={() => setSidebarOpen(true)}>
+                  <Icon icon="solar:hamburger-menu-bold" className="w-12 h-12" />
+                  <span className="sr-only">Open sidebar</span>
+                </Button>
+              </SheetTrigger>
+            </Sheet>
+          </header>
+        )}
 
         {/* Page Content */}
-        <main className="ml-12">
+        <main className={isDashboardRoute ? "" : "ml-12"}>
           <div className="">{children}</div>
         </main>
       </div>
