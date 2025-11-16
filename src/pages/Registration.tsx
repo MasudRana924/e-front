@@ -6,7 +6,6 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
 import {Link, useNavigate} from "react-router-dom"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../components/ui/card"
-import { Input } from "../components/ui/input"
 import { Label } from "../components/ui/label"
 import { Icon } from "@iconify/react"
 import { Checkbox } from "../components/ui/checkbox"
@@ -15,6 +14,8 @@ import type { AppDispatch, RootState } from "../redux/store"
 import { useSelector,useDispatch } from "react-redux"
 import { useToast } from "../components/ui/toast"
 import { Button } from "../components/ui/button"
+import { CustomTextFieldComponent } from "../components/ui/custom-text-field"
+import { InputAdornment, IconButton } from "@mui/material"
 
 const signupSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -91,8 +92,8 @@ export function SignupPage() {
   }
 
   return (
-    <main className="flex-1 flex items-center justify-center py-12 px-4 bg-gradient-to-br from-background to-muted">
-      <Card className="w-full max-w-md relative">
+    <main className="flex-1 flex items-center justify-center py-12 px-4 bg-background">
+      <Card className="w-full max-w-md relative border-0 shadow-none bg-transparent">
         
 
         <CardHeader className="text-center">
@@ -103,66 +104,67 @@ export function SignupPage() {
           <CardDescription>Join E-Wallet MFS today</CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="name">Name</Label>
-              <Input
-                id="name"
-                type="text"
-                placeholder="Enter your name"
-                {...register("name")}
-                className={errors.name ? "border-red-500" : ""}
-              />
-              {errors.name && <p className="text-sm text-red-500">{errors.name.message}</p>}
-            </div>
+          <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
+            <CustomTextFieldComponent
+              label="Name"
+              type="text"
+              placeholder="Enter your name"
+              focused
+              required
+              fullWidth
+              {...register("name")}
+              error={!!errors.name}
+              helperText={errors.name?.message}
+            />
 
-            <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="Enter your email"
-                {...register("email")}
-                className={errors.email ? "border-red-500" : ""}
-              />
-              {errors.email && <p className="text-sm text-red-500">{errors.email.message}</p>}
-            </div>
+            <CustomTextFieldComponent
+              label="Email"
+              type="email"
+              placeholder="Enter your email"
+              focused
+              required
+              fullWidth
+              {...register("email")}
+              error={!!errors.email}
+              helperText={errors.email?.message}
+            />
 
-            <div className="space-y-2">
-              <Label htmlFor="phoneNumber">Phone Number</Label>
-              <Input
-                id="phoneNumber"
-                type="tel"
-                placeholder="01XXXXXXXXX"
-                {...register("phoneNumber")}
-                className={errors.phoneNumber ? "border-red-500" : ""}
-              />
-              {errors.phoneNumber && <p className="text-sm text-red-500">{errors.phoneNumber.message}</p>}
-            </div>
+            <CustomTextFieldComponent
+              label="Phone Number"
+              type="tel"
+              placeholder="01XXXXXXXXX"
+              focused
+              required
+              fullWidth
+              {...register("phoneNumber")}
+              error={!!errors.phoneNumber}
+              helperText={errors.phoneNumber?.message}
+            />
 
-            <div className="space-y-2">
-              <Label htmlFor="password">Password (5 digits)</Label>
-              <div className="relative">
-                <Input
-                  id="password"
-                  type={showPassword ? "text" : "password"}
-                  placeholder="Enter 5-digit password"
-                  {...register("password")}
-                  className={errors.password ? "border-red-500 pr-10" : "pr-10"}
-                  maxLength={5}
-                />
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="sm"
-                  className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
-                  onClick={() => setShowPassword(!showPassword)}
-                >
-                  {showPassword ? <Icon icon="solar:eye-off" className="h-4 w-4" /> : <Icon icon="solar:eye" className="h-4 w-4" />}
-                </Button>
-              </div>
-              {errors.password && <p className="text-sm text-red-500">{errors.password.message}</p>}
-            </div>
+            <CustomTextFieldComponent
+              label="Password (5 digits)"
+              type={showPassword ? "text" : "password"}
+              placeholder="Enter 5-digit password"
+              focused
+              required
+              fullWidth
+              inputProps={{ maxLength: 5 }}
+              {...register("password")}
+              error={!!errors.password}
+              helperText={errors.password?.message}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={() => setShowPassword(!showPassword)}
+                      edge="end"
+                    >
+                      {showPassword ? <Icon icon="solar:eye-closed-bold" className="h-5 w-5" /> : <Icon icon="solar:eye-bold" className="h-5 w-5" />}
+                    </IconButton>
+                  </InputAdornment>
+                )
+              }}
+            />
 
             <div className="space-y-3">
               <Label>Select Your Role</Label>
@@ -194,6 +196,7 @@ export function SignupPage() {
             <Button 
               type="submit" 
               className="w-full"
+              style={{ height: '56px' }}
               disabled={isLoading}
             >
               {isLoading ? "Creating Account..." : "Create Account"}

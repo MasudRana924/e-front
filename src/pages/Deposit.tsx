@@ -1,11 +1,10 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { useAuth } from '../redux/features/auth/auth.api'
 import { useTransactions } from '../redux/features/transactions/transactions.api'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card'
 import { Button } from '../components/ui/button'
-import { Input } from '../components/ui/input'
-import { Label } from '../components/ui/label'
 import { Icon } from '@iconify/react'
+import { CustomTextFieldComponent } from '../components/ui/custom-text-field'
+import { InputAdornment } from '@mui/material'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
@@ -70,54 +69,55 @@ const Deposit = () => {
 
   return (
     <div className="max-w-md mx-auto">
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Icon icon="solar:plus" className="h-5 w-5" />
-            Add Money
-          </CardTitle>
-          <CardDescription>Add money to your wallet</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="amount">Amount (৳)</Label>
-              <Input
-                id="amount"
-                type="number"
-                placeholder="0.00"
-                step="0.01"
-                min="0"
-                {...register("amount")}
-              />
-              {errors.amount && <p className="text-sm text-red-500">{errors.amount.message}</p>}
-            </div>
+      <div className="mb-6">
+        <h2 className="text-2xl font-bold flex items-center gap-2">
+          <Icon icon="solar:plus" className="h-5 w-5" />
+          Add Money
+        </h2>
+        <p className="text-muted-foreground mt-2">Add money to your wallet</p>
+      </div>
+      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
+        <CustomTextFieldComponent
+          label="Amount (৳)"
+          type="number"
+          placeholder="0.00"
+          focused
+          required
+          fullWidth
+          inputProps={{ step: "0.01", min: "0" }}
+          {...register("amount")}
+          error={!!errors.amount}
+          helperText={errors.amount?.message}
+        />
 
-            <div className="space-y-2">
-              <Label htmlFor="pin">Your PIN</Label>
-              <div className="relative">
-                <Icon icon="solar:lock" className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                <Input
-                  id="pin"
-                  type="password"
-                  placeholder="Enter your PIN"
-                  className="pl-10"
-                  {...register("pin")}
-                />
-              </div>
-              {errors.pin && <p className="text-sm text-red-500">{errors.pin.message}</p>}
-            </div>
+        <CustomTextFieldComponent
+          label="Your PIN"
+          type="password"
+          placeholder="Enter your PIN"
+          focused
+          required
+          fullWidth
+          {...register("pin")}
+          error={!!errors.pin}
+          helperText={errors.pin?.message}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <Icon icon="solar:lock" className="h-5 w-5 text-muted-foreground" />
+              </InputAdornment>
+            )
+          }}
+        />
 
-            <Button 
-              type="submit" 
-              className="w-full"
-              disabled={loading}
-            >
-              {loading ? "Processing..." : "Add Money"}
-            </Button>
-          </form>
-        </CardContent>
-      </Card>
+        <Button 
+          type="submit" 
+          className="w-full"
+          style={{ height: '56px' }}
+          disabled={loading}
+        >
+          {loading ? "Processing..." : "Add Money"}
+        </Button>
+      </form>
     </div>
   )
 }

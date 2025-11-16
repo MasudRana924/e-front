@@ -11,9 +11,9 @@
   --popover-foreground: oklch(0.145 0 0);
   --primary: oklch(0.627 0.265 303.9); /* #7C3AED - darker purple for primary */
   --primary-foreground: oklch(1 0 0);
-  --secondary: oklch(0.97 0 0);
+  --secondary: oklch(1 0 0);
   --secondary-foreground: oklch(0.145 0 0);
-  --muted: oklch(0.97 0 0);
+  --muted: oklch(1 0 0);
   --muted-foreground: oklch(0.556 0 0);
   --accent: oklch(0.708 0.243 303.9); /* #8B5CF6 - lighter purple for accents */
   --accent-foreground: oklch(1 0 0);

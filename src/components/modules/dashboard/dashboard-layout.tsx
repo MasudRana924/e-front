@@ -65,7 +65,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
       <div className="p-6 border-b border-border">
         <div className="flex items-center gap-3">
           <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center">
-            <Icon icon="solar:wallet-money-bold" className="w-6 h-6 text-primary-foreground" />
+            <Icon icon="solar:wallet-money-bold" className="w-12 h-12 text-primary-foreground" />
           </div>
           <span className="font-bold text-2xl">E-Wallet MFS</span>
         </div>
@@ -77,9 +77,9 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
           <Link key={item.href} to={item.href}>
             <Button
               variant="ghost"
-              className="w-full justify-start gap-4 h-14 text-base font-medium text-muted-foreground hover:text-foreground hover:bg-accent"
+              className="w-full justify-start gap-4 h-14 text-lg font-medium text-muted-foreground hover:text-foreground hover:bg-accent"
             >
-              <Icon icon={item.icon} className="w-6 h-6" />
+              <Icon icon={item.icon} className="w-16 h-16" />
               {item.label}
             </Button>
           </Link>
@@ -128,7 +128,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
           <Sheet>
             <SheetTrigger asChild>
               <Button variant="ghost" size="icon" className="lg:hidden" onClick={() => setSidebarOpen(true)}>
-                <Icon icon="solar:hamburger-menu-bold" className="w-6 h-6" />
+                <Icon icon="solar:hamburger-menu-bold" className="w-12 h-12" />
                 <span className="sr-only">Open sidebar</span>
               </Button>
             </SheetTrigger>
