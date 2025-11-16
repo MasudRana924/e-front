@@ -2,24 +2,7 @@
 import { Button } from "../components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../components/ui/card"
 import { Badge } from "../components/ui/badge"
-import {
-  ArrowRight,
-  Shield,
-  Smartphone,
-  Zap,
-  CreditCard,
-  Users,
-  Globe,
-  Lock,
-  Clock,
-  TrendingUp,
-  Bell,
-  Fingerprint,
-  QrCode,
-  Receipt,
-  PiggyBank,
-  BarChart3,
-} from "lucide-react"
+import { Icon } from "@iconify/react"
 
 export default function FeaturesPage() {
   const featureCategories = [
@@ -28,19 +11,19 @@ export default function FeaturesPage() {
       description: "Bank-grade security to protect your financial data",
       features: [
         {
-          icon: Shield,
+          icon: "solar:shield-check-bold",
           title: "Advanced Encryption",
           description: "256-bit SSL encryption protects all your transactions and personal data.",
           badge: "Enterprise Grade",
         },
         {
-          icon: Fingerprint,
+          icon: "solar:fingerprint-scan-bold",
           title: "Biometric Authentication",
           description: "Use fingerprint or face recognition for secure and convenient access.",
           badge: "Secure",
         },
         {
-          icon: Lock,
+          icon: "solar:lock-password-bold",
           title: "Multi-Factor Authentication",
           description: "Additional security layers with SMS, email, and app-based verification.",
           badge: "Protected",
@@ -52,19 +35,19 @@ export default function FeaturesPage() {
       description: "Fast and convenient ways to move your money",
       features: [
         {
-          icon: Zap,
+          icon: "solar:bolt-bold",
           title: "Instant Transfers",
           description: "Send money to anyone instantly, 24/7, even on weekends and holidays.",
           badge: "Real-time",
         },
         {
-          icon: QrCode,
+          icon: "solar:qr-code-bold",
           title: "QR Code Payments",
           description: "Pay merchants by simply scanning QR codes - no cash or cards needed.",
           badge: "Contactless",
         },
         {
-          icon: Globe,
+          icon: "solar:global-bold",
           title: "International Transfers",
           description: "Send money globally with competitive exchange rates and low fees.",
           badge: "Global",
@@ -76,19 +59,19 @@ export default function FeaturesPage() {
       description: "Intelligent tools to manage your finances better",
       features: [
         {
-          icon: BarChart3,
+          icon: "solar:graph-up-bold",
           title: "Spending Analytics",
           description: "Track your spending patterns with detailed insights and categorization.",
           badge: "AI-Powered",
         },
         {
-          icon: PiggyBank,
+          icon: "solar:wallet-money-bold",
           title: "Smart Savings",
           description: "Automated savings goals and round-up features to help you save effortlessly.",
           badge: "Automated",
         },
         {
-          icon: Bell,
+          icon: "solar:bell-bold",
           title: "Smart Notifications",
           description: "Get intelligent alerts for transactions, bills, and spending limits.",
           badge: "Intelligent",
@@ -100,19 +83,19 @@ export default function FeaturesPage() {
       description: "Features designed to make your life easier",
       features: [
         {
-          icon: Receipt,
+          icon: "solar:bill-list-bold",
           title: "Bill Management",
           description: "Pay all your bills in one place with automatic scheduling and reminders.",
           badge: "Automated",
         },
         {
-          icon: CreditCard,
+          icon: "solar:card-bold",
           title: "Virtual Cards",
           description: "Generate virtual debit cards for online shopping and subscriptions.",
           badge: "Digital",
         },
         {
-          icon: Users,
+          icon: "solar:users-group-two-rounded-bold",
           title: "Group Payments",
           description: "Split bills and expenses with friends and family effortlessly.",
           badge: "Social",
@@ -148,7 +131,7 @@ export default function FeaturesPage() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button size="lg" className="bg-accent hover:bg-accent/90">
                 Start Using Features
-                <ArrowRight className="ml-2 h-5 w-5" />
+                <Icon icon="solar:arrow-right-linear" className="ml-2 h-5 w-5" />
               </Button>
               <Button size="lg" variant="outline">
                 View Pricing
@@ -185,7 +168,7 @@ export default function FeaturesPage() {
                   <Card key={index} className="text-center hover:shadow-lg transition-all duration-300 hover:scale-105">
                     <CardHeader>
                       <div className="relative">
-                        <feature.icon className="h-16 w-16 text-accent mx-auto mb-4" />
+                        <Icon icon={feature.icon} className="h-16 w-16 text-accent mx-auto mb-4" />
                         <Badge variant="outline" className="absolute -top-2 -right-2">
                           {feature.badge}
                         </Badge>
@@ -215,39 +198,39 @@ export default function FeaturesPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {[
                 {
-                  icon: Clock,
+                  icon: "solar:clock-circle-bold",
                   title: "Transaction History",
                   description: "Complete transaction history with search and filter options.",
                 },
                 {
-                  icon: TrendingUp,
+                  icon: "solar:graph-up-bold",
                   title: "Investment Tracking",
                   description: "Monitor your investments and portfolio performance.",
                 },
                 {
-                  icon: Smartphone,
+                  icon: "solar:smartphone-2-bold",
                   title: "Mobile Optimized",
                   description: "Fully responsive design optimized for all mobile devices.",
                 },
                 {
-                  icon: Users,
+                  icon: "solar:users-group-two-rounded-bold",
                   title: "Family Accounts",
                   description: "Manage family finances with shared accounts and controls.",
                 },
                 {
-                  icon: Globe,
+                  icon: "solar:global-bold",
                   title: "Multi-Currency",
                   description: "Support for multiple currencies with real-time exchange rates.",
                 },
                 {
-                  icon: Shield,
+                  icon: "solar:shield-check-bold",
                   title: "Fraud Protection",
                   description: "Advanced AI-powered fraud detection and prevention.",
                 },
               ].map((feature, index) => (
                 <Card key={index} className="hover:shadow-md transition-all duration-300">
                   <CardHeader className="pb-3">
-                    <feature.icon className="h-8 w-8 text-accent mb-2" />
+                    <Icon icon={feature.icon} className="h-8 w-8 text-accent mb-2" />
                     <CardTitle className="text-lg">{feature.title}</CardTitle>
                   </CardHeader>
                   <CardContent>
@@ -271,7 +254,7 @@ export default function FeaturesPage() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button size="lg" variant="secondary" className="bg-background text-primary hover:bg-background/90">
                 Get Started Now
-                <ArrowRight className="ml-2 h-5 w-5" />
+                <Icon icon="solar:arrow-right-linear" className="ml-2 h-5 w-5" />
               </Button>
               <Button
                 size="lg"

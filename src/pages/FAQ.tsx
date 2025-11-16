@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../co
 import { Input } from "../components/ui/input"
 import { Badge } from "../components/ui/badge"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../components/ui/accordion"
-import { Search, MessageCircle, Shield, CreditCard, Settings, HelpCircle, Phone, Mail } from "lucide-react"
+import { Icon } from "@iconify/react"
 
 export default function FAQPage() {
   const [searchQuery, setSearchQuery] = useState("")
@@ -15,7 +15,7 @@ export default function FAQPage() {
     {
       id: "getting-started",
       title: "Getting Started",
-      icon: Settings,
+      icon: "solar:settings-bold",
       color: "bg-blue-500",
       questions: [
         {
@@ -43,7 +43,7 @@ export default function FAQPage() {
     {
       id: "security",
       title: "Security & Privacy",
-      icon: Shield,
+      icon: "solar:shield-check-bold",
       color: "bg-green-500",
       questions: [
         {
@@ -71,7 +71,7 @@ export default function FAQPage() {
     {
       id: "transactions",
       title: "Transactions & Transfers",
-      icon: CreditCard,
+      icon: "solar:card-bold",
       color: "bg-purple-500",
       questions: [
         {
@@ -99,7 +99,7 @@ export default function FAQPage() {
     {
       id: "fees",
       title: "Fees & Pricing",
-      icon: CreditCard,
+      icon: "solar:card-bold",
       color: "bg-orange-500",
       questions: [
         {
@@ -127,7 +127,7 @@ export default function FAQPage() {
     {
       id: "support",
       title: "Support & Troubleshooting",
-      icon: HelpCircle,
+      icon: "solar:question-circle-bold",
       color: "bg-red-500",
       questions: [
         {
@@ -187,7 +187,7 @@ export default function FAQPage() {
 
             {/* Search Bar */}
             <div className="relative max-w-md mx-auto">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+              <Icon icon="solar:magnifer-bold" className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
               <Input
                 type="text"
                 placeholder="Search for answers..."
@@ -215,7 +215,7 @@ export default function FAQPage() {
                   >
                     <CardHeader className="text-center">
                       <div className={`p-3 rounded-full ${category.color} w-fit mx-auto mb-4`}>
-                        <category.icon className="h-6 w-6 text-white" />
+                        <Icon icon={category.icon} className="h-6 w-6 text-white" />
                       </div>
                       <CardTitle className="text-lg">{category.title}</CardTitle>
                       <CardDescription>{category.questions.length} questions</CardDescription>
@@ -254,7 +254,7 @@ export default function FAQPage() {
 
             {filteredCategories.length === 0 && searchQuery !== "" && (
               <div className="text-center py-12">
-                <HelpCircle className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
+                <Icon icon="solar:question-circle-bold" className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
                 <h3 className="text-xl font-semibold text-primary mb-2">No results found</h3>
                 <p className="text-muted-foreground mb-6">
                   We couldn't find any questions matching "{searchQuery}". Try different keywords or contact our support
@@ -279,7 +279,7 @@ export default function FAQPage() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <Card className="text-center">
                 <CardHeader>
-                  <MessageCircle className="h-12 w-12 text-accent mx-auto mb-4" />
+                  <Icon icon="solar:chat-round-call-bold" className="h-12 w-12 text-accent mx-auto mb-4" />
                   <CardTitle>Live Chat</CardTitle>
                   <CardDescription>Get instant help from our support team</CardDescription>
                 </CardHeader>
@@ -290,7 +290,7 @@ export default function FAQPage() {
 
               <Card className="text-center">
                 <CardHeader>
-                  <Mail className="h-12 w-12 text-accent mx-auto mb-4" />
+                  <Icon icon="solar:letter-bold" className="h-12 w-12 text-accent mx-auto mb-4" />
                   <CardTitle>Email Support</CardTitle>
                   <CardDescription>Send us a detailed message</CardDescription>
                 </CardHeader>
@@ -303,7 +303,7 @@ export default function FAQPage() {
 
               <Card className="text-center">
                 <CardHeader>
-                  <Phone className="h-12 w-12 text-accent mx-auto mb-4" />
+                  <Icon icon="solar:phone-calling-bold" className="h-12 w-12 text-accent mx-auto mb-4" />
                   <CardTitle>Phone Support</CardTitle>
                   <CardDescription>Call us for immediate assistance</CardDescription>
                 </CardHeader>

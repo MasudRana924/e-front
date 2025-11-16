@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../co
 import { Button } from '../components/ui/button'
 import { Input } from '../components/ui/input'
 import { Label } from '../components/ui/label'
-import { Plus, Lock } from 'lucide-react'
+import { Icon } from '@iconify/react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
@@ -73,7 +73,7 @@ const Deposit = () => {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Plus className="h-5 w-5" />
+            <Icon icon="solar:plus" className="h-5 w-5" />
             Add Money
           </CardTitle>
           <CardDescription>Add money to your wallet</CardDescription>
@@ -96,7 +96,7 @@ const Deposit = () => {
             <div className="space-y-2">
               <Label htmlFor="pin">Your PIN</Label>
               <div className="relative">
-                <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                <Icon icon="solar:lock" className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                 <Input
                   id="pin"
                   type="password"

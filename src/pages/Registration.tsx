@@ -8,7 +8,7 @@ import {Link, useNavigate} from "react-router-dom"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../components/ui/card"
 import { Input } from "../components/ui/input"
 import { Label } from "../components/ui/label"
-import { Eye, EyeOff, Wallet } from "lucide-react"
+import { Icon } from "@iconify/react"
 import { Checkbox } from "../components/ui/checkbox"
 import { signupUser } from "../redux/features/auth/auth.api"
 import type { AppDispatch, RootState } from "../redux/store"
@@ -97,7 +97,7 @@ export function SignupPage() {
 
         <CardHeader className="text-center">
           <div className="flex justify-center mb-2">
-            <Wallet className="h-8 w-8 text-accent" />
+            <Icon icon="solar:wallet" className="h-8 w-8 text-accent" />
           </div>
           <CardTitle className="text-2xl font-bold">Create Account</CardTitle>
           <CardDescription>Join E-Wallet MFS today</CardDescription>
@@ -158,7 +158,7 @@ export function SignupPage() {
                   className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
                   onClick={() => setShowPassword(!showPassword)}
                 >
-                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                  {showPassword ? <Icon icon="solar:eye-off" className="h-4 w-4" /> : <Icon icon="solar:eye" className="h-4 w-4" />}
                 </Button>
               </div>
               {errors.password && <p className="text-sm text-red-500">{errors.password.message}</p>}

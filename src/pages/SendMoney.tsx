@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../co
 import { Button } from '../components/ui/button'
 import { Input } from '../components/ui/input'
 import { Label } from '../components/ui/label'
-import { Send, Phone, Lock } from 'lucide-react'
+import { Icon } from '@iconify/react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
@@ -76,7 +76,7 @@ const SendMoney = () => {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Send className="h-5 w-5" />
+            <Icon icon="solar:plain-2-bold" className="h-5 w-5" />
             Send Money
           </CardTitle>
           <CardDescription>Enter recipient phone number, amount, and your PIN</CardDescription>
@@ -86,7 +86,7 @@ const SendMoney = () => {
             <div className="space-y-2">
               <Label htmlFor="receiverPhone">Recipient Phone Number</Label>
               <div className="relative">
-                <Phone className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                <Icon icon="solar:phone-bold" className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                 <Input
                   id="receiverPhone"
                   placeholder="01XXXXXXXXX"
@@ -113,7 +113,7 @@ const SendMoney = () => {
             <div className="space-y-2">
               <Label htmlFor="pin">Your PIN</Label>
               <div className="relative">
-                <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                <Icon icon="solar:lock-password-bold" className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                 <Input
                   id="pin"
                   type="password"

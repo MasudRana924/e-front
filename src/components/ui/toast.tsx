@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useCallback, useRef } from 'react';
 import type { ReactNode } from 'react';
-import { X, CheckCircle, AlertCircle, Info } from 'lucide-react';
+import { Icon } from '@iconify/react';
 import { cn } from '../../lib/utils';
 
 interface Toast {
@@ -90,11 +90,11 @@ const ToastItem: React.FC<ToastItemProps> = ({ toast, onClose }) => {
   const getIcon = () => {
     switch (toast.type) {
       case 'success':
-        return <CheckCircle className="h-5 w-5 text-primary" />;
+        return <Icon icon="solar:check-circle-bold" className="h-5 w-5 text-primary" />;
       case 'error':
-        return <AlertCircle className="h-5 w-5 text-red-500" />;
+        return <Icon icon="solar:danger-circle-bold" className="h-5 w-5 text-red-500" />;
       case 'info':
-        return <Info className="h-5 w-5 text-blue-500" />;
+        return <Icon icon="solar:info-circle-bold" className="h-5 w-5 text-blue-500" />;
       default:
         return null;
     }
@@ -128,7 +128,7 @@ const ToastItem: React.FC<ToastItemProps> = ({ toast, onClose }) => {
         onClick={onClose}
         className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
       >
-        <X className="h-4 w-4" />
+        <Icon icon="solar:close-circle-bold" className="h-4 w-4" />
       </button>
     </div>
   );

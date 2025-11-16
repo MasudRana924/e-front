@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { Card, CardContent } from '../components/ui/card'
 import { Button } from '../components/ui/button'
 import { Badge } from '../components/ui/badge'
-import { ArrowUpRight, ArrowDownLeft, Plus, Eye, EyeOff, Users, Smartphone, Zap, Shield } from 'lucide-react'
+import { Icon } from '@iconify/react'
 import { useSelector } from 'react-redux'
 import type { RootState } from '../redux/store'
 import { useDashboard } from '../redux/features/dashboard/dashboard.api'
@@ -88,7 +88,7 @@ const Dashboard = () => {
                     className="text-white hover:bg-white/20"
                     disabled={loading}
                   >
-                    {showBalance ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                    {showBalance ? <Icon icon="solar:eye-closed-bold" className="h-4 w-4" /> : <Icon icon="solar:eye-bold" className="h-4 w-4" />}
                   </Button>
                 </div>
               </div>
@@ -126,7 +126,7 @@ const Dashboard = () => {
                   </p>
                 </div>
                 <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center">
-                  <Users className="h-6 w-6 text-primary" />
+                  <Icon icon="solar:history-bold" className="h-6 w-6 text-primary" />
                 </div>
               </div>
             </CardContent>
@@ -147,7 +147,7 @@ const Dashboard = () => {
                   </p>
                 </div>
                 <div className="w-12 h-12 bg-green-100 dark:bg-green-900/20 rounded-xl flex items-center justify-center">
-                  <Plus className="h-6 w-6 text-green-600 dark:text-green-400" />
+                  <Icon icon="solar:add-circle-bold" className="h-6 w-6 text-green-600 dark:text-green-400" />
                 </div>
               </div>
             </CardContent>
@@ -168,7 +168,7 @@ const Dashboard = () => {
                   </p>
                 </div>
                 <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/20 rounded-xl flex items-center justify-center">
-                  <ArrowUpRight className="h-6 w-6 text-blue-600 dark:text-blue-400" />
+                  <Icon icon="solar:arrow-right-up-bold" className="h-6 w-6 text-blue-600 dark:text-blue-400" />
                 </div>
               </div>
             </CardContent>
@@ -189,7 +189,7 @@ const Dashboard = () => {
                   </p>
                 </div>
                 <div className="w-12 h-12 bg-orange-100 dark:bg-orange-900/20 rounded-xl flex items-center justify-center">
-                  <ArrowDownLeft className="h-6 w-6 text-orange-600 dark:text-orange-400" />
+                  <Icon icon="solar:arrow-left-down-bold" className="h-6 w-6 text-orange-600 dark:text-orange-400" />
                 </div>
               </div>
             </CardContent>
@@ -206,7 +206,7 @@ const Dashboard = () => {
                     <h3 className="text-lg font-bold mb-1">🎉 Special Offer!</h3>
                     <p className="text-purple-100 text-sm">2% cashback this month</p>
                   </div>
-                  <Zap className="h-6 w-6 text-yellow-300" />
+                  <Icon icon="solar:bolt-bold" className="h-6 w-6 text-yellow-300" />
                 </div>
               </CardContent>
             </Card>
@@ -218,7 +218,7 @@ const Dashboard = () => {
                     <h3 className="text-lg font-bold mb-1">🔒 Secure</h3>
                     <p className="text-green-100 text-sm">Bank-level security</p>
                   </div>
-                  <Shield className="h-6 w-6 text-blue-300" />
+                  <Icon icon="solar:shield-check-bold" className="h-6 w-6 text-blue-300" />
                 </div>
               </CardContent>
             </Card>
@@ -230,7 +230,7 @@ const Dashboard = () => {
                     <h3 className="text-lg font-bold mb-1">⚡ Fast</h3>
                     <p className="text-orange-100 text-sm">Instant transfers</p>
                   </div>
-                  <Smartphone className="h-6 w-6 text-red-300" />
+                  <Icon icon="solar:smartphone-2-bold" className="h-6 w-6 text-red-300" />
                 </div>
               </CardContent>
             </Card>

@@ -8,7 +8,7 @@ import { Input } from "./ui/input"
 import { Textarea } from "./ui/textarea"
 import { Label } from "./ui/label"
 import { useState } from "react"
-import { Loader2 } from "lucide-react"
+import { Icon } from "@iconify/react"
 
 const contactSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -100,7 +100,7 @@ export function ContactForm() {
       <Button type="submit" className="w-full" disabled={isSubmitting}>
         {isSubmitting ? (
           <>
-            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            <Icon icon="solar:refresh-bold" className="mr-2 h-4 w-4 animate-spin" />
             Sending Message...
           </>
         ) : (

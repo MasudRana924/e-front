@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../co
 import { Badge } from "../components/ui/badge"
 import { Switch } from "../components/ui/switch"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../components/ui/accordion"
-import { Check, X, Star, Shield, Zap, Users, ArrowRight } from "lucide-react"
+import { Icon } from "@iconify/react"
 
 export default function PricingPage() {
   const [isAnnual, setIsAnnual] = useState(false)
@@ -193,9 +193,9 @@ export default function PricingPage() {
                       {plan.features.map((feature, featureIndex) => (
                         <div key={featureIndex} className="flex items-center space-x-3">
                           {feature.included ? (
-                            <Check className="h-5 w-5 text-green-600 flex-shrink-0" />
+                            <Icon icon="solar:check-circle-bold" className="h-5 w-5 text-green-600 flex-shrink-0" />
                           ) : (
-                            <X className="h-5 w-5 text-muted-foreground flex-shrink-0" />
+                            <Icon icon="solar:close-circle-bold" className="h-5 w-5 text-muted-foreground flex-shrink-0" />
                           )}
                           <span className={`text-sm ${feature.included ? "text-foreground" : "text-muted-foreground"}`}>
                             {feature.name}
@@ -211,7 +211,7 @@ export default function PricingPage() {
                       }`}
                     >
                       {plan.cta}
-                      <ArrowRight className="ml-2 h-4 w-4" />
+                      <Icon icon="solar:arrow-right-linear" className="ml-2 h-4 w-4" />
                     </Button>
                   </CardContent>
                 </Card>
@@ -270,7 +270,7 @@ export default function PricingPage() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               <Card className="text-center">
                 <CardHeader>
-                  <Shield className="h-12 w-12 text-accent mx-auto mb-4" />
+                  <Icon icon="solar:shield-check-bold" className="h-12 w-12 text-accent mx-auto mb-4" />
                   <CardTitle>Bank-Level Security</CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -283,7 +283,7 @@ export default function PricingPage() {
 
               <Card className="text-center">
                 <CardHeader>
-                  <Zap className="h-12 w-12 text-accent mx-auto mb-4" />
+                  <Icon icon="solar:bolt-bold" className="h-12 w-12 text-accent mx-auto mb-4" />
                   <CardTitle>Lightning Fast</CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -295,7 +295,7 @@ export default function PricingPage() {
 
               <Card className="text-center">
                 <CardHeader>
-                  <Users className="h-12 w-12 text-accent mx-auto mb-4" />
+                  <Icon icon="solar:users-group-two-rounded-bold" className="h-12 w-12 text-accent mx-auto mb-4" />
                   <CardTitle>24/7 Support</CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -334,7 +334,7 @@ export default function PricingPage() {
         {/* CTA Section */}
         <section className="bg-accent py-20 px-4">
           <div className="max-w-4xl mx-auto text-center">
-            <Star className="h-16 w-16 text-accent-foreground mx-auto mb-6" />
+            <Icon icon="solar:star-bold" className="h-16 w-16 text-accent-foreground mx-auto mb-6" />
             <h2 className="text-3xl md:text-4xl font-bold text-accent-foreground mb-6">Ready to Get Started?</h2>
             <p className="text-xl text-accent-foreground/90 mb-8">
               Join thousands of users who trust E-wallet for their financial needs. Start with our free plan and upgrade
@@ -343,7 +343,7 @@ export default function PricingPage() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button size="lg" variant="secondary" className="bg-background text-primary hover:bg-background/90">
                 Start Free Account
-                <ArrowRight className="ml-2 h-5 w-5" />
+                <Icon icon="solar:arrow-right-linear" className="ml-2 h-5 w-5" />
               </Button>
               <Button
                 size="lg"

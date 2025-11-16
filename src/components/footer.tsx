@@ -1,5 +1,5 @@
 
-import { Smartphone, Mail, Phone, MapPin, Shield, Zap, Users } from "lucide-react"
+import { Icon } from "@iconify/react"
 
 export function Footer() {
   return (
@@ -10,7 +10,7 @@ export function Footer() {
           <div className="space-y-4">
             <div className="flex items-center space-x-2">
               <div className="p-2 bg-primary/10 rounded-lg">
-                <Smartphone className="h-6 w-6 text-primary" />
+                <Icon icon="solar:smartphone-2-bold" className="h-6 w-6 text-primary" />
               </div>
               <span className="text-xl font-bold text-foreground">E-wallet</span>
             </div>
@@ -20,15 +20,15 @@ export function Footer() {
             </p>
             <div className="flex space-x-4">
               <div className="flex items-center space-x-1 text-xs text-muted-foreground">
-                <Shield className="h-3 w-3" />
+                <Icon icon="solar:shield-check-bold" className="h-3 w-3" />
                 <span>Secure</span>
               </div>
               <div className="flex items-center space-x-1 text-xs text-muted-foreground">
-                <Zap className="h-3 w-3" />
+                <Icon icon="solar:bolt-bold" className="h-3 w-3" />
                 <span>Fast</span>
               </div>
               <div className="flex items-center space-x-1 text-xs text-muted-foreground">
-                <Users className="h-3 w-3" />
+                <Icon icon="solar:users-group-two-rounded-bold" className="h-3 w-3" />
                 <span>Trusted</span>
               </div>
             </div>
@@ -74,19 +74,19 @@ export function Footer() {
             <div className="space-y-3">
               <div className="flex items-center space-x-3 text-muted-foreground">
                 <div className="p-1.5 bg-primary/10 rounded-md">
-                  <Phone className="h-3 w-3 text-primary" />
+                  <Icon icon="solar:phone-bold" className="h-3 w-3 text-primary" />
                 </div>
                 <span className="text-sm">+880 1234 567890</span>
               </div>
               <div className="flex items-center space-x-3 text-muted-foreground">
                 <div className="p-1.5 bg-primary/10 rounded-md">
-                  <Mail className="h-3 w-3 text-primary" />
+                  <Icon icon="solar:letter-bold" className="h-3 w-3 text-primary" />
                 </div>
                 <span className="text-sm">support@ewallet.com</span>
               </div>
               <div className="flex items-center space-x-3 text-muted-foreground">
                 <div className="p-1.5 bg-primary/10 rounded-md">
-                  <MapPin className="h-3 w-3 text-primary" />
+                  <Icon icon="solar:map-point-bold" className="h-3 w-3 text-primary" />
                 </div>
                 <span className="text-sm">Dhaka, Bangladesh</span>
               </div>

@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { Link, useNavigate } from "react-router";
 
-import { Menu, X, Smartphone, ChevronDown, User, LogOut } from "lucide-react"
+import { Icon } from "@iconify/react"
 import { ThemeToggle } from "./theme-toggle"
 import { Button } from "./ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSeparator } from "./ui/dropdown-menu"
@@ -40,7 +40,7 @@ export function Navigation() {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2 transition-transform hover:scale-105">
-            <Smartphone className="h-8 w-8 text-accent" />
+            <Icon icon="solar:smartphone" className="h-8 w-8 text-accent" />
             <span className="text-xl font-bold text-primary">E-wallet</span>
           </Link>
 
@@ -59,7 +59,7 @@ export function Navigation() {
             <DropdownMenu>
               <DropdownMenuTrigger className="flex items-center text-foreground hover:text-accent transition-colors duration-200 outline-none">
                 Services
-                <ChevronDown className="ml-1 h-4 w-4" />
+                <Icon icon="solar:chevron-down" className="ml-1 h-4 w-4" />
               </DropdownMenuTrigger>
               <DropdownMenuContent align="start" className="w-48">
                 {serviceItems.map((item) => (
@@ -103,13 +103,13 @@ export function Navigation() {
                       <DropdownMenuSeparator />
                       <DropdownMenuItem asChild>
                         <Link to="/dashboard" className="w-full">
-                          <User className="mr-2 h-4 w-4" />
+                          <Icon icon="solar:user" className="mr-2 h-4 w-4" />
                           <span>Dashboard</span>
                         </Link>
                       </DropdownMenuItem>
                       <DropdownMenuSeparator />
                       <DropdownMenuItem onClick={handleLogout}>
-                        <LogOut className="mr-2 h-4 w-4" />
+                        <Icon icon="solar:log-out" className="mr-2 h-4 w-4" />
                         <span>Log out</span>
                       </DropdownMenuItem>
                     </DropdownMenuContent>
@@ -136,7 +136,7 @@ export function Navigation() {
           <div className="md:hidden flex items-center space-x-2">
             <ThemeToggle />
             <Button variant="ghost" size="sm" onClick={() => setIsOpen(!isOpen)} aria-label="Toggle menu">
-              {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+              {isOpen ? <Icon icon="solar:x" className="h-6 w-6" /> : <Icon icon="solar:menu" className="h-6 w-6" />}
             </Button>
           </div>
         </div>
@@ -194,7 +194,7 @@ export function Navigation() {
                       className="w-full justify-start text-red-600 hover:text-red-700 hover:bg-red-50"
                       onClick={handleLogout}
                     >
-                      <LogOut className="mr-2 h-4 w-4" />
+                      <Icon icon="solar:log-out" className="mr-2 h-4 w-4" />
                       Log out
                     </Button>
                   </>

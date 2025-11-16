@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../co
 import { Button } from '../components/ui/button'
 import { Input } from '../components/ui/input'
 import { Label } from '../components/ui/label'
-import { ArrowDownLeft, Phone, Lock } from 'lucide-react'
+import { Icon } from '@iconify/react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
@@ -76,7 +76,7 @@ const CashOut = () => {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <ArrowDownLeft className="h-5 w-5" />
+            <Icon icon="solar:arrow-down-left" className="h-5 w-5" />
             Cash Out
           </CardTitle>
           <CardDescription>Cash out to an agent with your password</CardDescription>
@@ -86,7 +86,7 @@ const CashOut = () => {
             <div className="space-y-2">
               <Label htmlFor="receiverPhone">Agent Phone Number</Label>
               <div className="relative">
-                <Phone className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                <Icon icon="solar:phone" className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                 <Input
                   id="receiverPhone"
                   placeholder="01XXXXXXXXX"
@@ -113,7 +113,7 @@ const CashOut = () => {
             <div className="space-y-2">
               <Label htmlFor="password">Your Password</Label>
               <div className="relative">
-                <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                <Icon icon="solar:lock" className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                 <Input
                   id="password"
                   type="password"

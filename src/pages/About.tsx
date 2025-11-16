@@ -1,28 +1,28 @@
 
-import { Shield, Users, Target, Award, Heart, Zap } from "lucide-react"
+import { Icon } from "@iconify/react"
 import { Badge } from "../components/ui/badge"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../components/ui/card"
 
 export default function AboutPage() {
   const values = [
     {
-      icon: Shield,
+      icon: "solar:shield-check-bold",
       title: "Security First",
       description:
         "We prioritize the security of your financial data above all else, using cutting-edge encryption and security protocols.",
     },
     {
-      icon: Users,
+      icon: "solar:users-group-rounded-bold",
       title: "Customer-Centric",
       description: "Every decision we make is guided by what's best for our customers and their financial well-being.",
     },
     {
-      icon: Target,
+      icon: "solar:target-bold",
       title: "Innovation",
       description: "We continuously innovate to provide the most advanced and user-friendly financial services.",
     },
     {
-      icon: Heart,
+      icon: "solar:heart-bold",
       title: "Trust & Transparency",
       description: "We build lasting relationships through honest communication and transparent business practices.",
     },
@@ -145,7 +145,7 @@ export default function AboutPage() {
                   <CardHeader>
                     <div className="flex items-center space-x-4">
                       <div className="p-3 bg-accent/10 rounded-lg">
-                        <value.icon className="h-8 w-8 text-accent" />
+                        <Icon icon={value.icon} className="h-8 w-8 text-accent" />
                       </div>
                       <CardTitle className="text-xl">{value.title}</CardTitle>
                     </div>
@@ -198,19 +198,19 @@ export default function AboutPage() {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               <div className="flex flex-col items-center">
-                <Award className="h-16 w-16 text-accent mb-4" />
+                <Icon icon="solar:cup-star-bold" className="h-16 w-16 text-accent mb-4" />
                 <h3 className="text-xl font-semibold text-primary mb-2">Best Fintech App 2024</h3>
                 <p className="text-muted-foreground">Financial Technology Awards</p>
               </div>
 
               <div className="flex flex-col items-center">
-                <Shield className="h-16 w-16 text-accent mb-4" />
+                <Icon icon="solar:shield-check-bold" className="h-16 w-16 text-accent mb-4" />
                 <h3 className="text-xl font-semibold text-primary mb-2">Security Excellence</h3>
                 <p className="text-muted-foreground">Cybersecurity Innovation Awards</p>
               </div>
 
               <div className="flex flex-col items-center">
-                <Zap className="h-16 w-16 text-accent mb-4" />
+                <Icon icon="solar:bolt-bold" className="h-16 w-16 text-accent mb-4" />
                 <h3 className="text-xl font-semibold text-primary mb-2">Innovation Leader</h3>
                 <p className="text-muted-foreground">Mobile Banking Excellence</p>
               </div>

@@ -3,7 +3,7 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../../ui/table"
 import { Badge } from "../../ui/badge"
 import { Button } from "../../ui/button"
-import { ChevronLeft, ChevronRight } from "lucide-react"
+import { Icon } from "@iconify/react"
 
 interface Transaction {
   id: string
@@ -85,7 +85,7 @@ export function TransactionTable({ transactions, currentPage, totalPages, onPage
         </p>
         <div className="flex items-center space-x-2">
           <Button variant="outline" size="sm" onClick={() => onPageChange(currentPage - 1)} disabled={currentPage <= 1}>
-            <ChevronLeft className="h-4 w-4" />
+            <Icon icon="solar:alt-arrow-left-linear" className="h-4 w-4" />
             Previous
           </Button>
           <Button
@@ -95,7 +95,7 @@ export function TransactionTable({ transactions, currentPage, totalPages, onPage
             disabled={currentPage >= totalPages}
           >
             Next
-            <ChevronRight className="h-4 w-4" />
+            <Icon icon="solar:alt-arrow-right-linear" className="h-4 w-4" />
           </Button>
         </div>
       </div>

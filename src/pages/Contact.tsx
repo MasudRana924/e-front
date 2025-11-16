@@ -2,30 +2,30 @@
 import { ContactForm } from "../components/contact-form"
 import { Button } from "../components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../components/ui/card"
-import { Mail, Phone, MapPin, Clock, MessageSquare, HeadphonesIcon } from "lucide-react"
+import { Icon } from "@iconify/react"
 
 export default function ContactPage() {
   const contactInfo = [
     {
-      icon: Phone,
+      icon: "solar:phone-bold",
       title: "Phone Support",
       details: "+1 (555) 123-4567",
       description: "Available 24/7 for urgent matters",
     },
     {
-      icon: Mail,
+      icon: "solar:letter-bold",
       title: "Email Support",
       details: "support@e-wallet.com", // Updated email domain to match E-wallet branding
       description: "We'll respond within 24 hours",
     },
     {
-      icon: MapPin,
+      icon: "solar:map-point-bold",
       title: "Office Location",
       details: "123 Financial Street, Suite 100",
       description: "New York, NY 10001",
     },
     {
-      icon: Clock,
+      icon: "solar:clock-circle-bold",
       title: "Business Hours",
       details: "Monday - Friday: 9AM - 6PM EST",
       description: "Weekend support available online",
@@ -34,19 +34,19 @@ export default function ContactPage() {
 
   const supportOptions = [
     {
-      icon: MessageSquare,
+      icon: "solar:chat-round-bold",
       title: "Live Chat",
       description: "Get instant help from our support team",
       action: "Start Chat",
     },
     {
-      icon: HeadphonesIcon,
+      icon: "solar:phone-calling-bold",
       title: "Phone Support",
       description: "Speak directly with a support specialist",
       action: "Call Now",
     },
     {
-      icon: Mail,
+      icon: "solar:letter-bold",
       title: "Email Support",
       description: "Send us a detailed message about your issue",
       action: "Send Email",
@@ -99,7 +99,7 @@ export default function ContactPage() {
                     {contactInfo.map((info, index) => (
                       <div key={index} className="flex items-start space-x-4">
                         <div className="p-3 bg-accent/10 rounded-lg">
-                          <info.icon className="h-6 w-6 text-accent" />
+                          <Icon icon={info.icon} className="h-6 w-6 text-accent" />
                         </div>
                         <div>
                           <h3 className="font-semibold text-primary">{info.title}</h3>
@@ -119,7 +119,7 @@ export default function ContactPage() {
                   <CardContent>
                     <div className="aspect-video bg-muted rounded-lg flex items-center justify-center">
                       <div className="text-center">
-                        <MapPin className="h-12 w-12 text-accent mx-auto mb-2" />
+                        <Icon icon="solar:map-point-bold" className="h-12 w-12 text-accent mx-auto mb-2" />
                         <p className="text-muted-foreground">Interactive map would be embedded here</p>
                         <p className="text-sm text-muted-foreground">123 Financial Street, New York, NY 10001</p>
                       </div>
@@ -145,7 +145,7 @@ export default function ContactPage() {
               {supportOptions.map((option, index) => (
                 <Card key={index} className="text-center hover:shadow-lg transition-shadow">
                   <CardHeader>
-                    <option.icon className="h-12 w-12 text-accent mx-auto mb-4" />
+                    <Icon icon={option.icon} className="h-12 w-12 text-accent mx-auto mb-4" />
                     <CardTitle className="text-xl">{option.title}</CardTitle>
                     <CardDescription>{option.description}</CardDescription>
                   </CardHeader>

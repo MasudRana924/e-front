@@ -5,7 +5,7 @@ import { Card, CardContent,  } from '../components/ui/card'
 import { Badge } from '../components/ui/badge'
 import { Button } from '../components/ui/button'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../components/ui/table'
-import { History, ArrowUpRight,  Plus, ChevronLeft, ChevronRight } from 'lucide-react'
+import { Icon } from '@iconify/react'
 import { toast } from 'sonner'
 
 const Transactions = () => {
@@ -50,11 +50,11 @@ const Transactions = () => {
   const getTransactionIcon = (type: string) => {
     switch (type) {
       case 'add-money':
-        return <Plus className="h-4 w-4" />
+        return <Icon icon="solar:plus" className="h-4 w-4" />
       case 'send-money':
-        return <ArrowUpRight className="h-4 w-4" />
+        return <Icon icon="solar:arrow-up-right" className="h-4 w-4" />
       default:
-        return <History className="h-4 w-4" />
+        return <Icon icon="solar:history" className="h-4 w-4" />
     }
   }
 
@@ -112,7 +112,7 @@ const Transactions = () => {
           ) : transactionHistory.length === 0 ? (
             <div className="flex items-center justify-center py-12">
               <div className="text-center">
-                <History className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                <Icon icon="solar:history" className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
                 <div className="text-muted-foreground text-lg">No transactions found</div>
                 <div className="text-muted-foreground text-sm">Your transaction history will appear here</div>
               </div>
@@ -189,7 +189,7 @@ const Transactions = () => {
                       disabled={currentPage <= 1}
                       className="flex items-center gap-1"
                     >
-                      <ChevronLeft className="h-4 w-4" />
+                      <Icon icon="solar:chevron-left" className="h-4 w-4" />
                       Previous
                     </Button>
                     
@@ -215,7 +215,7 @@ const Transactions = () => {
                       className="flex items-center gap-1"
                     >
                       Next
-                      <ChevronRight className="h-4 w-4" />
+                      <Icon icon="solar:chevron-right" className="h-4 w-4" />
                     </Button>
                   </div>
                 </div>

@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../co
 import { Button } from '../components/ui/button'
 import { Input } from '../components/ui/input'
 import { Label } from '../components/ui/label'
-import { ArrowDownRight, Lock, Wallet } from 'lucide-react'
+import { Icon } from '@iconify/react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
@@ -76,7 +76,7 @@ const WithdrawMoney = () => {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <ArrowDownRight className="h-5 w-5" />
+            <Icon icon="solar:arrow-down-right" className="h-5 w-5" />
             Withdraw Money
           </CardTitle>
           <CardDescription>Withdraw money from your wallet</CardDescription>
@@ -99,7 +99,7 @@ const WithdrawMoney = () => {
             <div className="space-y-2">
               <Label htmlFor="receiverWallet">Receiver Wallet</Label>
               <div className="relative">
-                <Wallet className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                <Icon icon="solar:wallet" className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                 <Input
                   id="receiverWallet"
                   placeholder="Enter receiver wallet"
@@ -113,7 +113,7 @@ const WithdrawMoney = () => {
             <div className="space-y-2">
               <Label htmlFor="pin">Your PIN</Label>
               <div className="relative">
-                <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                <Icon icon="solar:lock" className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                 <Input
                   id="pin"
                   type="password"

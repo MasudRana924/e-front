@@ -5,22 +5,7 @@ import { Button } from "../../ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "../../ui/avatar"
 import { Badge } from "../../ui/badge"
 import { Sheet, SheetContent, SheetTrigger } from "../../ui/sheet"
-import {
-  Home,
-  CreditCard,
-  Send,
-  History,
-  User,
-  Users,
-  Settings,
-  Menu,
-  Wallet,
-  TrendingUp,
-  Shield,
-  UserCheck,
-  ArrowDownLeft,
-  ArrowDownRight,
-} from "lucide-react"
+import { Icon } from "@iconify/react"
 import { Link } from "react-router-dom"
 import { useAuth } from "../../../redux/features/auth/auth.api"
 
@@ -30,27 +15,27 @@ interface DashboardLayoutProps {
 
 const navigationItems = {
   USER: [
-    { icon: Home, label: "Dashboard", href: "/dashboard" },
-    { icon: Send, label: "Send Money", href: "/dashboard/send" },
-    { icon: CreditCard, label: "Add Money", href: "/dashboard/add-money" },
-    { icon: ArrowDownRight, label: "Withdraw Money", href: "/dashboard/withdraw" },
-    { icon: ArrowDownLeft, label: "Cash Out", href: "/dashboard/cash-out" },
-    { icon: History, label: "Transactions", href: "/dashboard/transactions" },
-    { icon: User, label: "Profile", href: "/dashboard/profile" },
+    { icon: "solar:home-2-bold", label: "Dashboard", href: "/dashboard" },
+    { icon: "solar:plain-2-bold", label: "Send Money", href: "/dashboard/send" },
+    { icon: "solar:card-bold", label: "Add Money", href: "/dashboard/add-money" },
+    { icon: "solar:arrow-right-down-bold", label: "Withdraw Money", href: "/dashboard/withdraw" },
+    { icon: "solar:arrow-left-down-bold", label: "Cash Out", href: "/dashboard/cash-out" },
+    { icon: "solar:history-bold", label: "Transactions", href: "/dashboard/transactions" },
+    { icon: "solar:user-bold", label: "Profile", href: "/dashboard/profile" },
   ],
   AGENT: [
-    { icon: Home, label: "Dashboard", href: "/dashboard" },
-    { icon: TrendingUp, label: "Cash In", href: "/dashboard/cash-in" },
-    { icon: History, label: "My Transactions", href: "/dashboard/transactions" },
-    { icon: User, label: "Profile", href: "/dashboard/profile" },
+    { icon: "solar:home-2-bold", label: "Dashboard", href: "/dashboard" },
+    { icon: "solar:graph-up-bold", label: "Cash In", href: "/dashboard/cash-in" },
+    { icon: "solar:history-bold", label: "My Transactions", href: "/dashboard/transactions" },
+    { icon: "solar:user-bold", label: "Profile", href: "/dashboard/profile" },
   ],
   ADMIN: [
-    { icon: Home, label: "Dashboard", href: "/dashboard" },
-    { icon: Users, label: "Manage Users", href: "/dashboard/users" },
-    { icon: UserCheck, label: "Manage Agents", href: "/dashboard/agents" },
-    { icon: History, label: "All Transactions", href: "/dashboard/transactions" },
-    { icon: Settings, label: "System Settings", href: "/dashboard/settings" },
-    { icon: Shield, label: "Security", href: "/dashboard/security" },
+    { icon: "solar:home-2-bold", label: "Dashboard", href: "/dashboard" },
+    { icon: "solar:users-group-two-rounded-bold", label: "Manage Users", href: "/dashboard/users" },
+    { icon: "solar:user-check-rounded-bold", label: "Manage Agents", href: "/dashboard/agents" },
+    { icon: "solar:history-bold", label: "All Transactions", href: "/dashboard/transactions" },
+    { icon: "solar:settings-bold", label: "System Settings", href: "/dashboard/settings" },
+    { icon: "solar:shield-check-bold", label: "Security", href: "/dashboard/security" },
   ],
 }
 
@@ -78,11 +63,11 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
     <div className={`flex flex-col h-full bg-card border-r border-border ${className}`}>
       {/* Logo */}
       <div className="p-6 border-b border-border">
-        <div className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-            <Wallet className="w-4 h-4 text-primary-foreground" />
+        <div className="flex items-center gap-3">
+          <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center">
+            <Icon icon="solar:wallet-money-bold" className="w-6 h-6 text-primary-foreground" />
           </div>
-          <span className="font-bold text-lg">E-Wallet MFS</span>
+          <span className="font-bold text-2xl">E-Wallet MFS</span>
         </div>
       </div>
 
@@ -92,9 +77,9 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
           <Link key={item.href} to={item.href}>
             <Button
               variant="ghost"
-              className="w-full justify-start gap-3 h-11 text-muted-foreground hover:text-foreground hover:bg-accent"
+              className="w-full justify-start gap-4 h-14 text-base font-medium text-muted-foreground hover:text-foreground hover:bg-accent"
             >
-              <item.icon className="w-4 h-4" />
+              <Icon icon={item.icon} className="w-6 h-6" />
               {item.label}
             </Button>
           </Link>
@@ -104,18 +89,18 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
       {/* User Info */}
       <div className="p-4 border-t border-border">
         <div className="flex items-center gap-3 mb-3">
-          <Avatar className="w-10 h-10">
+          <Avatar className="w-12 h-12">
             <AvatarImage src="/placeholder.svg" />
-            <AvatarFallback className="bg-primary text-primary-foreground">
+            <AvatarFallback className="bg-primary text-primary-foreground text-lg">
               {displayName.charAt(0).toUpperCase()}
             </AvatarFallback>
           </Avatar>
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium truncate">{displayName}</p>
-            <p className="text-xs text-muted-foreground truncate">{displayPhone}</p>
+            <p className="text-base font-semibold truncate">{displayName}</p>
+            <p className="text-sm text-muted-foreground truncate">{displayPhone}</p>
           </div>
         </div>
-        <Badge className={`w-full justify-center ${roleColors[displayRole]}`}>
+        <Badge className={`w-full justify-center text-base py-2 ${roleColors[displayRole]}`}>
           {displayRole.charAt(0).toUpperCase() + displayRole.slice(1)}
         </Badge>
       </div>
@@ -143,7 +128,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
           <Sheet>
             <SheetTrigger asChild>
               <Button variant="ghost" size="icon" className="lg:hidden" onClick={() => setSidebarOpen(true)}>
-                <Menu className="w-5 h-5" />
+                <Icon icon="solar:hamburger-menu-bold" className="w-6 h-6" />
                 <span className="sr-only">Open sidebar</span>
               </Button>
             </SheetTrigger>

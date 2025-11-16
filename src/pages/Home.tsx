@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import { Button } from "../components/ui/button"
-import { ArrowRight, Shield, Smartphone, Star, Zap } from "lucide-react"
+import { Icon } from "@iconify/react"
 import { SkeletonCard, SkeletonTestimonial } from "../components/skeleton-loader"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../components/ui/card"
 
@@ -39,7 +39,7 @@ function Home() {
                 className="bg-accent text-accent-foreground hover:bg-accent/90 hover:text-accent-foreground transition-all duration-200 hover:scale-105"
               >
                 Get Started Today
-                <ArrowRight className="ml-2 h-5 w-5" />
+                <Icon icon="solar:arrow-right-linear" className="ml-2 h-5 w-5" />
               </Button>
               <Button
                 size="lg"
@@ -67,17 +67,17 @@ function Home() {
                 ? [...Array(3)].map((_, index) => <SkeletonCard key={index} />)
                 : [
                     {
-                      icon: Shield,
+                      icon: "solar:shield-check-bold",
                       title: "Bank-Level Security",
                       desc: "Your transactions are protected with advanced encryption and multi-factor authentication.",
                     },
                     {
-                      icon: Zap,
+                      icon: "solar:bolt-bold",
                       title: "Lightning Fast",
                       desc: "Complete transactions in seconds with our optimized mobile platform.",
                     },
                     {
-                      icon: Smartphone,
+                      icon: "solar:smartphone-2-bold",
                       title: "Mobile First",
                       desc: "Designed specifically for mobile devices with an intuitive user experience.",
                     },
@@ -88,7 +88,7 @@ function Home() {
                       style={{ animationDelay: `${index * 100}ms` }}
                     >
                       <CardHeader>
-                        <feature.icon className="h-12 w-12 text-accent mx-auto mb-4" />
+                        <Icon icon={feature.icon} className="h-12 w-12 text-accent mx-auto mb-4" />
                         <CardTitle>{feature.title}</CardTitle>
                       </CardHeader>
                       <CardContent>
@@ -169,7 +169,7 @@ function Home() {
                       <CardHeader>
                         <div className="flex items-center space-x-1 mb-2">
                           {[...Array(5)].map((_, i) => (
-                            <Star key={i} className="h-4 w-4 fill-accent text-accent" />
+                            <Icon key={i} icon="solar:star-bold" className="h-4 w-4 fill-accent text-accent" />
                           ))}
                         </div>
                         <CardTitle className="text-lg">{testimonial.name}</CardTitle>
@@ -197,7 +197,7 @@ function Home() {
               className="bg-background text-primary hover:bg-background/90 transition-all duration-200 hover:scale-105"
             >
               Create Your Account
-              <ArrowRight className="ml-2 h-5 w-5" />
+              <Icon icon="solar:arrow-right-linear" className="ml-2 h-5 w-5" />
             </Button>
           </div>
         </section>
