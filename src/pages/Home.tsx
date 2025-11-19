@@ -4,8 +4,6 @@ import { Icon } from "@iconify/react"
 import { SkeletonCard, SkeletonTestimonial } from "../components/skeleton-loader"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../components/ui/card"
 
-
-
 function Home() {
   const [isLoading, setIsLoading] = useState(true)
   useEffect(() => {
@@ -18,10 +16,7 @@ function Home() {
   }, [])
 
   return (
-  
-     
-
-      <div>
+    <div>
         {/* Hero Section */}
         <section className="bg-gradient-to-br from-background to-muted py-20 px-4 transition-all duration-700 animate-in fade-in-0 slide-in-from-bottom-4">
           <div className="max-w-7xl mx-auto text-center">

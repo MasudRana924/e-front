@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Card, CardContent } from '../components/ui/card'
 import { Button } from '../components/ui/button'
@@ -7,12 +7,54 @@ import { Icon } from '@iconify/react'
 import { useSelector } from 'react-redux'
 import type { RootState } from '../redux/store'
 import { useDashboard } from '../redux/features/dashboard/dashboard.api'
+import { format } from 'date-fns'
+import api from '../redux/baseApi'
+
+type WalletUser = {
+  id: string
+  name: string
+  phone: string
+  role: string
+}
+
+type Wallet = {
+  id: string
+  balance: number
+  status: string
+  user: WalletUser
+}
+
+type TransactionItem = {
+  id: string
+  type: string
+  senderWallet: Wallet | null
+  receiverWallet: Wallet | null
+  time: string
+}
+
+type TransactionMeta = {
+  total: number
+  page: number
+  limit: number
+  totalPages: number
+}
+
+const TRANSACTION_LIMIT = 4
 
 const Dashboard = () => {
   const navigate = useNavigate()
   const [showBalance, setShowBalance] = useState(false)
   const [currentTime, setCurrentTime] = useState(new Date())
   const hasFetched = useRef(false)
+  const [transactions, setTransactions] = useState<TransactionItem[]>([])
+  const [transactionsMeta, setTransactionsMeta] = useState<TransactionMeta>({
+    total: 0,
+    page: 1,
+    limit: TRANSACTION_LIMIT,
+    totalPages: 1
+  })
+  const [transactionsLoading, setTransactionsLoading] = useState(true)
+  const [transactionsError, setTransactionsError] = useState<string | null>(null)
 
   // Get user data from Redux store
   const { user } = useSelector((state: RootState) => state.auth)
@@ -43,6 +85,29 @@ const Dashboard = () => {
     return () => clearInterval(timer)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  const fetchTransactions = useCallback(async (page = 1) => {
+    setTransactionsLoading(true)
+    setTransactionsError(null)
+
+    try {
+      const response = await api.get<{ data: TransactionItem[]; meta: TransactionMeta }>('/transaction/me', {
+        params: { page, limit: TRANSACTION_LIMIT }
+      })
+
+      setTransactions(response.data?.data ?? [])
+      setTransactionsMeta(response.data?.meta ?? { total: 0, page, limit: TRANSACTION_LIMIT, totalPages: 1 })
+    } catch (error) {
+      console.error('Failed to fetch dashboard transactions', error)
+      setTransactionsError('Unable to load your recent transactions right now.')
+    } finally {
+      setTransactionsLoading(false)
+    }
+  }, [])
+
+  useEffect(() => {
+    fetchTransactions(1)
+  }, [fetchTransactions])
 
   // Handle authentication errors
   useEffect(() => {
@@ -191,6 +256,129 @@ const Dashboard = () => {
               </>
             )}
           </div>
+        </div>
+
+        {/* Recent Transactions */}
+        <div className="mb-10">
+          <div className="mb-4 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+            <h3 className="text-xl font-bold text-foreground">All Transaction</h3>
+            <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
+              <span>Total: {transactionsMeta.total}</span>
+              <Button
+                variant="outline"
+                size="sm"
+                className="flex items-center gap-2"
+                onClick={() => fetchTransactions(transactionsMeta.page)}
+                disabled={transactionsLoading}
+              >
+                <Icon icon="solar:refresh-linear" className={`h-4 w-4 ${transactionsLoading ? 'animate-spin' : ''}`} />
+                Refresh
+              </Button>
+            </div>
+          </div>
+
+          <div className="space-y-3">
+            {transactionsError && (
+              <div className="rounded-xl border border-destructive/40 bg-destructive/10 px-4 py-3 text-destructive text-sm">
+                {transactionsError}
+              </div>
+            )}
+
+            {transactionsLoading &&
+              [...Array(TRANSACTION_LIMIT)].map((_, index) => (
+                <Card key={`txn-skeleton-${index}`} className="border-dashed">
+                  <CardContent className="p-4">
+                    <div className="flex animate-pulse flex-col gap-2">
+                      <div className="h-4 w-1/3 rounded bg-muted" />
+                      <div className="flex gap-4">
+                        <div className="h-3 w-20 rounded bg-muted" />
+                        <div className="h-3 w-24 rounded bg-muted" />
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+
+            {!transactionsLoading && !transactions.length && (
+              <Card>
+                <CardContent className="p-6 text-center text-muted-foreground">No transactions found yet.</CardContent>
+              </Card>
+            )}
+
+            {!transactionsLoading &&
+              transactions.map((transaction) => {
+                const formattedTime = transaction.time
+                  ? format(new Date(transaction.time), 'MMM dd, yyyy hh:mm a')
+                  : 'N/A'
+                const typeLabel = transaction.type.replace(/_/g, ' ')
+                const senderPhone = transaction.senderWallet?.user?.phone || 'System'
+                const receiverPhone = transaction.receiverWallet?.user?.phone || 'System'
+
+                // Type-specific badge colors
+                const typeColors: Record<string, string> = {
+                  commission: 'bg-emerald-50 text-emerald-700 border-emerald-200',
+                  cash_in: 'bg-indigo-50 text-indigo-700 border-indigo-200',
+                  cash_out: 'bg-rose-50 text-rose-700 border-rose-200',
+                  add_money: 'bg-amber-50 text-amber-700 border-amber-200',
+                  send_money: 'bg-sky-50 text-sky-700 border-sky-200',
+                }
+                const badgeColor = typeColors[transaction.type] || 'bg-muted/40 border-border'
+
+                return (
+                  <Card key={transaction.id} className="border border-border/70 hover:shadow-md transition-shadow">
+                    <CardContent className="p-4">
+                      <div className="flex items-start justify-between gap-4">
+                        {/* Left side: Sender and Receiver */}
+                        <div className="flex-1 space-y-2">
+                          <div className="flex items-center gap-2">
+                            <span className="text-xs text-muted-foreground">Sender:</span>
+                            <span className="font-semibold text-foreground">{senderPhone}</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <span className="text-xs text-muted-foreground">Receiver:</span>
+                            <span className="font-semibold text-foreground">{receiverPhone}</span>
+                          </div>
+                        </div>
+
+                        {/* Right side: Type and Time */}
+                        <div className="flex flex-col items-end gap-2">
+                          <Badge variant="outline" className={`capitalize ${badgeColor}`}>
+                            {typeLabel}
+                          </Badge>
+                          <span className="text-xs text-muted-foreground">{formattedTime}</span>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                )
+              })}
+          </div>
+
+          {transactionsMeta.totalPages > 1 && (
+            <div className="mt-4 flex flex-wrap items-center justify-between gap-3 text-sm">
+              <p className="text-muted-foreground">
+                Page {transactionsMeta.page} of {transactionsMeta.totalPages}
+              </p>
+              <div className="flex gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => fetchTransactions(transactionsMeta.page - 1)}
+                  disabled={transactionsMeta.page <= 1 || transactionsLoading}
+                >
+                  Previous
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => fetchTransactions(transactionsMeta.page + 1)}
+                  disabled={transactionsMeta.page >= transactionsMeta.totalPages || transactionsLoading}
+                >
+                  Next
+                </Button>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Promotional Cards */}
