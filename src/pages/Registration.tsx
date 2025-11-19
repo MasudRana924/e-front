@@ -24,7 +24,7 @@ const signupSchema = z.object({
   role: z.enum(["USER", "AGENT"]).refine((value) => value !== undefined, {
     message: "Please select a role",
   }),
-  password: z.string().regex(/^[0-9]{5}$/, "Password must be exactly 5 digits"),
+  password: z.string().regex(/^\d{4,}$/, "Password must be at least 4 digits"),
 })
 
 type SignupFormData = z.infer<typeof signupSchema>
@@ -142,13 +142,13 @@ export function SignupPage() {
             />
 
             <CustomTextFieldComponent
-              label="Password (5 digits)"
+              label="Password (min 4 digits)"
               type={showPassword ? "text" : "password"}
-              placeholder="Enter 5-digit password"
+              placeholder="Enter at least 4 digits"
               focused
               required
               fullWidth
-              inputProps={{ maxLength: 5 }}
+              inputProps={{ inputMode: "numeric", pattern: "[0-9]*", minLength: 4 }}
               {...register("password")}
               error={!!errors.password}
               helperText={errors.password?.message}

@@ -41,9 +41,9 @@ interface CashOutResponse {
 }
 
 interface CashInRequest {
-  phoneNumber: string;
+  userPhone: string;
   amount: string;
-  password: string;
+  pin: string;
 }
 
 interface CashInResponse {
@@ -304,7 +304,13 @@ export const cashIn = createAsyncThunk(
         throw new Error("No authentication token found");
       }
 
-      const response = await api.post("/transactions/cash-in", formData, {
+      const apiData = {
+        userPhone: formData.userPhone,
+        amount: Number(formData.amount),
+        pin: formData.pin,
+      };
+
+      const response = await api.post("/wallet/cash-in", apiData, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',

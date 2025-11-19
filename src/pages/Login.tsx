@@ -16,7 +16,7 @@ import { useAuth } from "../redux/features/auth/auth.api"
 
 const loginSchema = z.object({
   phoneNumber: z.string().regex(/^[0-9]{11}$/, "Phone number must be 11 digits"),
-  password: z.string().regex(/^[0-9]{5}$/, "Password must be exactly 5 digits"),
+  password: z.string().regex(/^\d{4,}$/, "Password must be at least 4 digits"),
 })
 
 type LoginFormData = z.infer<typeof loginSchema>
@@ -104,6 +104,7 @@ export function LoginPage() {
               required
               fullWidth
               type={showPassword ? "text" : "password"}
+              inputProps={{ inputMode: "numeric", pattern: "[0-9]*", minLength: 4 }}
               {...register("password")}
               error={!!errors.password}
               helperText={errors.password?.message}

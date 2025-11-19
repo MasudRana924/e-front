@@ -14,7 +14,7 @@ import { useNavigate } from 'react-router-dom'
 const sendMoneySchema = z.object({
   receiverPhone: z.string().min(1, "Phone number is required").regex(/^01[3-9]\d{8}$/, "Please enter a valid Bangladeshi phone number"),
   amount: z.string().min(1, "Amount is required").refine((val) => !isNaN(Number(val)) && Number(val) > 0, "Amount must be a positive number"),
-  pin: z.string().min(1, "PIN is required"),
+  pin: z.string().regex(/^\d{4,}$/, "PIN must be at least 4 digits"),
 })
 
 type SendMoneyFormData = z.infer<typeof sendMoneySchema>
@@ -118,10 +118,11 @@ const SendMoney = () => {
             <CustomTextFieldComponent
               label="Your PIN"
               type="password"
-              placeholder="Enter your PIN"
+              placeholder="At least 4 digits"
               focused
               required
               fullWidth
+              inputProps={{ inputMode: "numeric", pattern: "[0-9]*", minLength: 4 }}
               {...register("pin")}
               error={!!errors.pin}
               helperText={errors.pin?.message}

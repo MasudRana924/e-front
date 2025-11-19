@@ -18,6 +18,7 @@ const Dashboard = () => {
   const { user } = useSelector((state: RootState) => state.auth)
   // Get dashboard data from Redux store
   const { error, fetchUserStats, balance, balanceLoading, balanceStatus, fetchBalance } = useDashboard()
+  const isAgent = user?.role === 'AGENT'
 
   // Fetch balance from API when dashboard loads
   useEffect(() => {
@@ -116,46 +117,79 @@ const Dashboard = () => {
         {/* Services Section */}
         <div className="mb-8">
           <h3 className="text-xl font-bold mb-4">Services</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
-            {/* Send Money */}
-            <Card className="cursor-pointer hover:shadow-lg transition-shadow" onClick={() => navigate('/dashboard/send')}>
-              <CardContent className="p-3 text-center">
-                <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900/20 rounded-lg flex items-center justify-center mx-auto mb-2">
-                  <Icon icon="solar:plain-2-bold" className="h-5 w-5 text-blue-600 dark:text-blue-400" />
-                </div>
-                <h4 className="font-semibold text-sm">Send Money</h4>
-              </CardContent>
-            </Card>
+          <div
+            className={`grid grid-cols-1 ${isAgent ? 'md:grid-cols-2 lg:grid-cols-3' : 'md:grid-cols-2 lg:grid-cols-4'} gap-3`}
+          >
+            {isAgent ? (
+              <>
+                <Card
+                  className="cursor-pointer hover:shadow-lg transition-shadow"
+                  onClick={() => navigate('/dashboard/add-money')}
+                >
+                  <CardContent className="p-3 text-center">
+                    <div className="w-10 h-10 bg-green-100 dark:bg-green-900/20 rounded-lg flex items-center justify-center mx-auto mb-2">
+                      <Icon icon="solar:card-bold" className="h-5 w-5 text-green-600 dark:text-green-400" />
+                    </div>
+                    <h4 className="font-semibold text-sm">Add Money</h4>
+                    <p className="text-xs text-muted-foreground mt-1">Top up your agent wallet instantly</p>
+                  </CardContent>
+                </Card>
+                <Card
+                  className="cursor-pointer hover:shadow-lg transition-shadow"
+                  onClick={() => navigate('/dashboard/cash-in')}
+                >
+                  <CardContent className="p-3 text-center">
+                    <div className="w-10 h-10 bg-emerald-100 dark:bg-emerald-900/20 rounded-lg flex items-center justify-center mx-auto mb-2">
+                      <Icon icon="solar:card-send-bold" className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
+                    </div>
+                    <h4 className="font-semibold text-sm">Agent Cash In</h4>
+                    <p className="text-xs text-muted-foreground mt-1">Serve customers with instant cash in</p>
+                  </CardContent>
+                </Card>
+              </>
+            ) : (
+              <>
+                {/* Send Money */}
+                <Card className="cursor-pointer hover:shadow-lg transition-shadow" onClick={() => navigate('/dashboard/send')}>
+                  <CardContent className="p-3 text-center">
+                    <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900/20 rounded-lg flex items-center justify-center mx-auto mb-2">
+                      <Icon icon="solar:plain-2-bold" className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                    </div>
+                    <h4 className="font-semibold text-sm">Send Money</h4>
+                  </CardContent>
+                </Card>
 
-            {/* Add Money */}
-            <Card className="cursor-pointer hover:shadow-lg transition-shadow" onClick={() => navigate('/dashboard/add-money')}>
-              <CardContent className="p-3 text-center">
-                <div className="w-10 h-10 bg-green-100 dark:bg-green-900/20 rounded-lg flex items-center justify-center mx-auto mb-2">
-                  <Icon icon="solar:card-bold" className="h-5 w-5 text-green-600 dark:text-green-400" />
-                </div>
-                <h4 className="font-semibold text-sm">Add Money</h4>
-              </CardContent>
-            </Card>
+                {/* Add Money */}
+                <Card className="cursor-pointer hover:shadow-lg transition-shadow" onClick={() => navigate('/dashboard/add-money')}>
+                  <CardContent className="p-3 text-center">
+                    <div className="w-10 h-10 bg-green-100 dark:bg-green-900/20 rounded-lg flex items-center justify-center mx-auto mb-2">
+                      <Icon icon="solar:card-bold" className="h-5 w-5 text-green-600 dark:text-green-400" />
+                    </div>
+                    <h4 className="font-semibold text-sm">Add Money</h4>
+                  </CardContent>
+                </Card>
 
-            {/* Cash Out */}
-            <Card className="cursor-pointer hover:shadow-lg transition-shadow" onClick={() => navigate('/dashboard/cash-out')}>
-              <CardContent className="p-3 text-center">
-                <div className="w-10 h-10 bg-orange-100 dark:bg-orange-900/20 rounded-lg flex items-center justify-center mx-auto mb-2">
-                  <Icon icon="solar:arrow-left-down-bold" className="h-5 w-5 text-orange-600 dark:text-orange-400" />
-                </div>
-                <h4 className="font-semibold text-sm">Cash Out</h4>
-              </CardContent>
-            </Card>
+                {/* Cash Out */}
+                <Card className="cursor-pointer hover:shadow-lg transition-shadow" onClick={() => navigate('/dashboard/cash-out')}>
+                  <CardContent className="p-3 text-center">
+                    <div className="w-10 h-10 bg-orange-100 dark:bg-orange-900/20 rounded-lg flex items-center justify-center mx-auto mb-2">
+                      <Icon icon="solar:arrow-left-down-bold" className="h-5 w-5 text-orange-600 dark:text-orange-400" />
+                    </div>
+                    <h4 className="font-semibold text-sm">Cash Out</h4>
+                  </CardContent>
+                </Card>
 
-            {/* Withdraw Money */}
-            <Card className="cursor-pointer hover:shadow-lg transition-shadow" onClick={() => navigate('/dashboard/withdraw')}>
-              <CardContent className="p-3 text-center">
-                <div className="w-10 h-10 bg-purple-100 dark:bg-purple-900/20 rounded-lg flex items-center justify-center mx-auto mb-2">
-                  <Icon icon="solar:arrow-right-down-bold" className="h-5 w-5 text-purple-600 dark:text-purple-400" />
-                </div>
-                <h4 className="font-semibold text-sm">Withdraw Money</h4>
-              </CardContent>
-            </Card>
+                {/* Withdraw Money */}
+                <Card className="cursor-pointer hover:shadow-lg transition-shadow" onClick={() => navigate('/dashboard/withdraw')}>
+                  <CardContent className="p-3 text-center">
+                    <div className="w-10 h-10 bg-purple-100 dark:bg-purple-900/20 rounded-lg flex items-center justify-center mx-auto mb-2">
+                      <Icon icon="solar:arrow-right-down-bold" className="h-5 w-5 text-purple-600 dark:text-purple-400" />
+                    </div>
+                    <h4 className="font-semibold text-sm">Withdraw Money</h4>
+                  </CardContent>
+                </Card>
+              </>
+            )}
           </div>
         </div>
 

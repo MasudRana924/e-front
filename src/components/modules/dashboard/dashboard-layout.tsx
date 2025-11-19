@@ -25,6 +25,7 @@ const navigationItems = {
   ],
   AGENT: [
     { icon: "solar:home-2-bold", label: "Dashboard", href: "/dashboard" },
+    { icon: "solar:card-bold", label: "Add Money", href: "/dashboard/add-money" },
     { icon: "solar:graph-up-bold", label: "Cash In", href: "/dashboard/cash-in" },
     { icon: "solar:history-bold", label: "My Transactions", href: "/dashboard/transactions" },
     { icon: "solar:user-bold", label: "Profile", href: "/dashboard/profile" },
@@ -51,7 +52,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
   const location = useLocation()
   
   // Hide sidebar on dashboard route and form routes
-  const hideSidebarRoutes = ['/dashboard', '/dashboard/send', '/dashboard/add-money', '/dashboard/withdraw', '/dashboard/cash-out']
+  const hideSidebarRoutes = ['/dashboard', '/dashboard/send', '/dashboard/add-money', '/dashboard/withdraw', '/dashboard/cash-out', '/dashboard/cash-in']
   const isDashboardRoute = hideSidebarRoutes.includes(location.pathname)
 
   if (!user) {

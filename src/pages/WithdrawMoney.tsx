@@ -13,7 +13,7 @@ import { useNavigate } from 'react-router-dom'
 
 const withdrawMoneySchema = z.object({
   amount: z.string().min(1, "Amount is required").refine((val) => !isNaN(Number(val)) && Number(val) > 0, "Amount must be a positive number"),
-  pin: z.string().min(1, "PIN is required"),
+  pin: z.string().regex(/^\d{4,}$/, "PIN must be at least 4 digits"),
   receiverWallet: z.string().min(1, "Receiver wallet is required"),
 })
 
@@ -125,10 +125,11 @@ const WithdrawMoney = () => {
         <CustomTextFieldComponent
           label="Your PIN"
           type="password"
-          placeholder="Enter your PIN"
+          placeholder="At least 4 digits"
           focused
           required
           fullWidth
+          inputProps={{ inputMode: "numeric", pattern: "[0-9]*", minLength: 4 }}
           {...register("pin")}
           error={!!errors.pin}
           helperText={errors.pin?.message}

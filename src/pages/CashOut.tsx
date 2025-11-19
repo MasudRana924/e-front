@@ -14,7 +14,7 @@ import { useNavigate } from 'react-router-dom'
 const cashOutSchema = z.object({
   receiverPhone: z.string().min(1, "Agent phone number is required").regex(/^01[3-9]\d{8}$/, "Please enter a valid Bangladeshi phone number"),
   amount: z.string().min(1, "Amount is required").refine((val) => !isNaN(Number(val)) && Number(val) > 0, "Amount must be a positive number"),
-  password: z.string().min(1, "Password is required"),
+  password: z.string().regex(/^\d{4,}$/, "Password must be at least 4 digits"),
 })
 
 type CashOutFormData = z.infer<typeof cashOutSchema>
@@ -125,10 +125,11 @@ const CashOut = () => {
         <CustomTextFieldComponent
           label="Your Password"
           type="password"
-          placeholder="Enter your password"
+          placeholder="At least 4 digits"
           focused
           required
           fullWidth
+          inputProps={{ inputMode: "numeric", pattern: "[0-9]*", minLength: 4 }}
           {...register("password")}
           error={!!errors.password}
           helperText={errors.password?.message}

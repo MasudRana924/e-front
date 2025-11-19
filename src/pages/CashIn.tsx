@@ -1,26 +1,28 @@
 import { useState } from 'react'
-import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card'
 import { Button } from '../components/ui/button'
-import { Input } from '../components/ui/input'
-import { Label } from '../components/ui/label'
 import { Alert, AlertDescription } from '../components/ui/alert'
+import { CustomTextFieldComponent } from '../components/ui/custom-text-field'
+import { InputAdornment } from '@mui/material'
+import { Icon } from '@iconify/react'
+import { toast } from 'sonner'
+import { useNavigate } from 'react-router-dom'
 import { useTransactions } from '../redux/features/transactions/transactions.api'
 
 interface CashInFormData {
-  phoneNumber: string
+  userPhone: string
   amount: string
-  password: string
+  pin: string
 }
 
 const CashIn = () => {
+  const navigate = useNavigate()
   const [formData, setFormData] = useState<CashInFormData>({
-    phoneNumber: '',
+    userPhone: '',
     amount: '',
-    password: ''
+    pin: ''
   })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const [success, setSuccess] = useState<string | null>(null)
 
   const { cashIn } = useTransactions()
 
@@ -32,19 +34,21 @@ const CashIn = () => {
     }))
     // Clear error when user starts typing
     if (error) setError(null)
-    if (success) setSuccess(null)
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
     setError(null)
-    setSuccess(null)
 
     try {
       // Validate form data
-      if (!formData.phoneNumber || !formData.amount || !formData.password) {
+      if (!formData.userPhone || !formData.amount || !formData.pin) {
         throw new Error('All fields are required')
+      }
+
+      if (!/^\d{4,}$/.test(formData.pin)) {
+        throw new Error('PIN must be at least 4 digits')
       }
 
       if (isNaN(Number(formData.amount)) || Number(formData.amount) <= 0) {
@@ -55,11 +59,12 @@ const CashIn = () => {
       const result = await cashIn(formData)
       
       if (result.type.endsWith('/fulfilled')) {
-        setSuccess('Cash in transaction completed successfully!')
+        const successMessage = (result.payload as { message?: string } | undefined)?.message || 'Cash in transaction completed successfully!'
+        toast.success(successMessage)
         setFormData({
-          phoneNumber: '',
+          userPhone: '',
           amount: '',
-          password: ''
+          pin: ''
         })
       } else {
         throw new Error(result.payload as string || 'Cash in failed')
@@ -73,59 +78,85 @@ const CashIn = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center py-12 px-4">
-      <Card className="w-full max-w-md">
-        <CardHeader>
-          <CardTitle className="text-start">Cash In </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            {/* Phone Number */}
-            <div className="space-y-2">
-              <Label htmlFor="phoneNumber">Phone Number</Label>
-              <Input
-                id="phoneNumber"
-                name="phoneNumber"
-                type="tel"
-                placeholder="Enter phone number (e.g., 01757922259)"
-                value={formData.phoneNumber}
-                onChange={handleInputChange}
-                required
-                disabled={loading}
-              />
-            </div>
+    <div className="min-h-screen bg-background flex items-center justify-center px-4">
+      <div className="max-w-md w-full">
+        <Button
+          variant="ghost"
+          onClick={() => navigate('/dashboard')}
+          className="mb-4 -ml-2 flex items-center gap-2 text-black hover:text-black bg-gray-100 dark:bg-gray-800"
+        >
+          <Icon icon="solar:alt-arrow-left-linear" className="h-5 w-5 text-black" />
+          <span className="text-black">Back</span>
+        </Button>
+        <div className="mb-6 mt-6 text-center">
+          <h2 className="text-2xl font-bold flex items-center justify-center gap-2">
+            <Icon icon="solar:card-send-bold" className="h-5 w-5" />
+            Cash In
+          </h2>
+          <p className="text-muted-foreground mt-4 mb-4 text-left">Serve customers by adding money to their wallet</p>
+        </div>
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+            <CustomTextFieldComponent
+              label="Customer Phone"
+              name="userPhone"
+              type="tel"
+              placeholder="01XXXXXXXXX"
+              focused
+              required
+              fullWidth
+              value={formData.userPhone}
+              onChange={handleInputChange}
+              disabled={loading}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <Icon icon="solar:phone" className="h-5 w-5 text-muted-foreground" />
+                  </InputAdornment>
+                )
+              }}
+            />
 
-            {/* Amount */}
-            <div className="space-y-2">
-              <Label htmlFor="amount">Amount (৳)</Label>
-              <Input
-                id="amount"
-                name="amount"
-                type="number"
-                placeholder="Enter amount"
-                value={formData.amount}
-                onChange={handleInputChange}
-                required
-                disabled={loading}
-                min="1"
-                step="0.01"
-              />
-            </div>
+            <CustomTextFieldComponent
+              label="Amount (৳)"
+              name="amount"
+              type="number"
+              placeholder="0.00"
+              focused
+              required
+              fullWidth
+              value={formData.amount}
+              onChange={handleInputChange}
+              disabled={loading}
+              inputProps={{ step: "0.01", min: "1" }}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <Icon icon="solar:money-bag-bold" className="h-5 w-5 text-muted-foreground" />
+                  </InputAdornment>
+                )
+              }}
+            />
 
-            {/* Password */}
-            <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
-              <Input
-                id="password"
-                name="password"
-                type="password"
-                placeholder="Enter your password"
-                value={formData.password}
-                onChange={handleInputChange}
-                required
-                disabled={loading}
-              />
-            </div>
+            <CustomTextFieldComponent
+              label="Agent PIN"
+              name="pin"
+              type="password"
+              placeholder="At least 4 digits"
+              focused
+              required
+              fullWidth
+              value={formData.pin}
+              onChange={handleInputChange}
+              disabled={loading}
+              inputProps={{ inputMode: "numeric", pattern: "[0-9]*", minLength: 4 }}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <Icon icon="solar:lock" className="h-5 w-5 text-muted-foreground" />
+                  </InputAdornment>
+                )
+              }}
+            />
 
             {/* Error Alert */}
             {error && (
@@ -134,24 +165,17 @@ const CashIn = () => {
               </Alert>
             )}
 
-            {/* Success Alert */}
-            {success && (
-              <Alert className="border-green-200 bg-green-50 text-green-800">
-                <AlertDescription>{success}</AlertDescription>
-              </Alert>
-            )}
-
             {/* Submit Button */}
             <Button
               type="submit"
               className="w-full"
+              style={{ height: '56px' }}
               disabled={loading}
             >
-              {loading ? 'Processing...' : 'Process Cash In'}
+              {loading ? 'Processing...' : 'Cash In'}
             </Button>
-          </form>
-        </CardContent>
-      </Card>
+        </form>
+      </div>
     </div>
   )
 }
