@@ -12,9 +12,9 @@ import { toast } from 'sonner'
 import { useNavigate } from 'react-router-dom'
 
 const cashOutSchema = z.object({
-  receiverPhone: z.string().min(1, "Agent phone number is required").regex(/^01[3-9]\d{8}$/, "Please enter a valid Bangladeshi phone number"),
+  agentPhone: z.string().min(1, "Agent phone number is required").regex(/^01[3-9]\d{8}$/, "Please enter a valid Bangladeshi phone number"),
   amount: z.string().min(1, "Amount is required").refine((val) => !isNaN(Number(val)) && Number(val) > 0, "Amount must be a positive number"),
-  password: z.string().regex(/^\d{4,}$/, "Password must be at least 4 digits"),
+  pin: z.string().regex(/^\d{4,}$/, "PIN must be at least 4 digits"),
 })
 
 type CashOutFormData = z.infer<typeof cashOutSchema>
@@ -88,7 +88,7 @@ const CashOut = () => {
           <Icon icon="solar:arrow-down-left" className="h-5 w-5" />
           Cash Out
         </h2>
-        <p className="text-muted-foreground mt-4 mb-4 text-left">Cash out to an agent with your password</p>
+        <p className="text-muted-foreground mt-4 mb-4 text-left">Cash out to an agent with your PIN</p>
       </div>
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
         <CustomTextFieldComponent
@@ -97,9 +97,9 @@ const CashOut = () => {
           focused
           required
           fullWidth
-          {...register("receiverPhone")}
-          error={!!errors.receiverPhone}
-          helperText={errors.receiverPhone?.message}
+          {...register("agentPhone")}
+          error={!!errors.agentPhone}
+          helperText={errors.agentPhone?.message}
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
@@ -123,16 +123,16 @@ const CashOut = () => {
         />
 
         <CustomTextFieldComponent
-          label="Your Password"
+          label="Your PIN"
           type="password"
           placeholder="At least 4 digits"
           focused
           required
           fullWidth
           inputProps={{ inputMode: "numeric", pattern: "[0-9]*", minLength: 4 }}
-          {...register("password")}
-          error={!!errors.password}
-          helperText={errors.password?.message}
+          {...register("pin")}
+          error={!!errors.pin}
+          helperText={errors.pin?.message}
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
