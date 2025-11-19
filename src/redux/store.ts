@@ -4,6 +4,7 @@ import authReducer from "./features/auth/auth.api";
 import transactionReducer from "./features/transactions/transactions.api";
 import dashboardReducer from "./features/dashboard/dashboard.api";
 import userReducer from "./features/user/user.api";
+import adminReducer from "./features/admin/admin.api";
 
 export const store = configureStore({
   reducer: {
@@ -11,6 +12,7 @@ export const store = configureStore({
     transactions: transactionReducer,
     dashboard: dashboardReducer,
     user: userReducer,
+    admin: adminReducer,
   },
 });
 
