@@ -59,6 +59,17 @@ interface ApiError {
   message?: string;
 }
 
+interface AdminAddMoneyRequest {
+  amount: string;
+  pin: string;
+}
+
+interface TransferToAgentRequest {
+  amount: string;
+  pin: string;
+  agentPhone: string;
+}
+
 interface AdminState {
   users: User[];
   agents: Agent[];
@@ -77,6 +88,8 @@ interface AdminState {
   usersLoading: boolean;
   agentsLoading: boolean;
   approveLoading: boolean;
+  adminLoading: boolean;
+  adminError: string | null;
   error: string | null;
 }
 
@@ -98,6 +111,8 @@ const initialState: AdminState = {
   usersLoading: false,
   agentsLoading: false,
   approveLoading: false,
+  adminLoading: false,
+  adminError: null,
   error: null,
 };
 
@@ -267,6 +282,119 @@ export const approveUser = createAsyncThunk(
   }
 );
 
+// Async thunk for admin add money
+export const adminAddMoney = createAsyncThunk(
+  "admin/adminAddMoney",
+  async (formData: AdminAddMoneyRequest, { rejectWithValue }) => {
+    try {
+      const token = localStorage.getItem("authToken");
+      
+      if (!token) {
+        throw new Error("No authentication token found");
+      }
+
+      const apiData = {
+        amount: Number(formData.amount),
+        pin: formData.pin,
+      };
+
+      const response = await api.post("/admin/add-money", apiData, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+      
+      return response.data;
+    } catch (err: unknown) {
+      const error = err as ApiError;
+      
+      console.error("Admin Add Money API Error Details:", {
+        status: error.response?.status,
+        data: error.response?.data,
+        message: error.message,
+      });
+      
+      let errorMessage = "Failed to add money";
+      
+      if (error.response?.data) {
+        if (typeof error.response.data === 'object' && error.response.data !== null) {
+          if ('message' in error.response.data && error.response.data.message) {
+            errorMessage = error.response.data.message;
+          } else if ('error' in error.response.data && error.response.data.error) {
+            errorMessage = error.response.data.error;
+          } else {
+            errorMessage = JSON.stringify(error.response.data);
+          }
+        } else if (typeof error.response.data === 'string') {
+          errorMessage = error.response.data;
+        }
+      } else if (error.message) {
+        errorMessage = error.message;
+      }
+      
+      return rejectWithValue(errorMessage);
+    }
+  }
+);
+
+// Async thunk for transfer to agent
+export const transferToAgent = createAsyncThunk(
+  "admin/transferToAgent",
+  async (formData: TransferToAgentRequest, { rejectWithValue }) => {
+    try {
+      const token = localStorage.getItem("authToken");
+      
+      if (!token) {
+        throw new Error("No authentication token found");
+      }
+
+      const apiData = {
+        amount: Number(formData.amount),
+        pin: formData.pin,
+        agentPhone: formData.agentPhone,
+      };
+
+      const response = await api.post("/admin/transfer-to-agent", apiData, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+      
+      return response.data;
+    } catch (err: unknown) {
+      const error = err as ApiError;
+      
+      console.error("Transfer to Agent API Error Details:", {
+        status: error.response?.status,
+        data: error.response?.data,
+        message: error.message,
+      });
+      
+      let errorMessage = "Failed to transfer money";
+      
+      if (error.response?.data) {
+        if (typeof error.response.data === 'object' && error.response.data !== null) {
+          if ('message' in error.response.data && error.response.data.message) {
+            errorMessage = error.response.data.message;
+          } else if ('error' in error.response.data && error.response.data.error) {
+            errorMessage = error.response.data.error;
+          } else {
+            errorMessage = JSON.stringify(error.response.data);
+          }
+        } else if (typeof error.response.data === 'string') {
+          errorMessage = error.response.data;
+        }
+      } else if (error.message) {
+        errorMessage = error.message;
+      }
+      
+      return rejectWithValue(errorMessage);
+    }
+  }
+);
+
 // Async thunk for approving agent
 export const approveAgent = createAsyncThunk(
   "admin/approveAgent",
@@ -324,6 +452,9 @@ const adminSlice = createSlice({
   reducers: {
     clearError(state) {
       state.error = null;
+    },
+    clearAdminError(state) {
+      state.adminError = null;
     },
   },
   extraReducers: (builder) => {
@@ -394,11 +525,35 @@ const adminSlice = createSlice({
       .addCase(approveAgent.rejected, (state, action) => {
         state.approveLoading = false;
         state.error = action.payload as string;
+      })
+      .addCase(adminAddMoney.pending, (state) => {
+        state.adminLoading = true;
+        state.adminError = null;
+      })
+      .addCase(adminAddMoney.fulfilled, (state) => {
+        state.adminLoading = false;
+        state.adminError = null;
+      })
+      .addCase(adminAddMoney.rejected, (state, action) => {
+        state.adminLoading = false;
+        state.adminError = action.payload as string;
+      })
+      .addCase(transferToAgent.pending, (state) => {
+        state.adminLoading = true;
+        state.adminError = null;
+      })
+      .addCase(transferToAgent.fulfilled, (state) => {
+        state.adminLoading = false;
+        state.adminError = null;
+      })
+      .addCase(transferToAgent.rejected, (state, action) => {
+        state.adminLoading = false;
+        state.adminError = action.payload as string;
       });
   },
 });
 
-export const { clearError } = adminSlice.actions;
+export const { clearError, clearAdminError } = adminSlice.actions;
 
 export default adminSlice.reducer;
 
@@ -427,13 +582,28 @@ export const useAdmin = () => {
     dispatch(clearError());
   }, [dispatch]);
 
+  const handleAdminAddMoney = useCallback((formData: AdminAddMoneyRequest) => {
+    return dispatch(adminAddMoney(formData));
+  }, [dispatch]);
+
+  const handleTransferToAgent = useCallback((formData: TransferToAgentRequest) => {
+    return dispatch(transferToAgent(formData));
+  }, [dispatch]);
+
+  const handleClearAdminError = useCallback(() => {
+    dispatch(clearAdminError());
+  }, [dispatch]);
+
   return {
     ...admin,
     fetchUsers: handleFetchUsers,
     fetchAgents: handleFetchAgents,
     approveUser: handleApproveUser,
     approveAgent: handleApproveAgent,
+    adminAddMoney: handleAdminAddMoney,
+    transferToAgent: handleTransferToAgent,
     clearError: handleClearError,
+    clearAdminError: handleClearAdminError,
   };
 };
 

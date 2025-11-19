@@ -18,6 +18,8 @@ import CashOut from "../pages/CashOut";
 import CashIn from "../pages/CashIn";
 import Transactions from "../pages/Transactions";
 import Profile from "../pages/Profile";
+import AdminAddMoney from "../pages/AdminAddMoney";
+import AdminTransferToAgent from "../pages/AdminTransferToAgent";
 import { ProtectedRoute } from "../components/ProtectedRoute";
 import { DashboardWrapper } from "../components/DashboardWrapper";
 import { RedirectIfAuthenticated } from "../components/RedirectIfAuthenticated";
@@ -165,6 +167,26 @@ export const router = createBrowserRouter([
           <ProtectedRoute>
             <DashboardWrapper>
               <Profile />
+            </DashboardWrapper>
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "dashboard/admin/add-money",
+        element: (
+          <ProtectedRoute>
+            <DashboardWrapper>
+              <AdminAddMoney />
+            </DashboardWrapper>
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "dashboard/admin/transfer-to-agent",
+        element: (
+          <ProtectedRoute>
+            <DashboardWrapper>
+              <AdminTransferToAgent />
             </DashboardWrapper>
           </ProtectedRoute>
         ),

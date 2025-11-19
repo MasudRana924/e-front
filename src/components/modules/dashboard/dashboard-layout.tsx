@@ -13,7 +13,7 @@ interface DashboardLayoutProps {
   children: React.ReactNode
 }
 
-const navigationItems = {
+const navigationItems: Record<string, Array<{ icon: string; label: string; href: string }>> = {
   USER: [
     { icon: "solar:home-2-bold", label: "Dashboard", href: "/dashboard" },
     { icon: "solar:plain-2-bold", label: "Send Money", href: "/dashboard/send" },
@@ -38,12 +38,20 @@ const navigationItems = {
     { icon: "solar:settings-bold", label: "System Settings", href: "/dashboard/settings" },
     { icon: "solar:shield-check-bold", label: "Security", href: "/dashboard/security" },
   ],
+  SUPER_ADMIN: [
+    { icon: "solar:home-2-bold", label: "Dashboard", href: "/dashboard" },
+    { icon: "solar:card-bold", label: "Add Money", href: "/dashboard/admin/add-money" },
+    { icon: "solar:plain-2-bold", label: "B2B Transfer", href: "/dashboard/admin/transfer-to-agent" },
+    { icon: "solar:history-bold", label: "Transactions", href: "/dashboard/transactions" },
+    { icon: "solar:user-bold", label: "Profile", href: "/dashboard/profile" },
+  ],
 }
 
-const roleColors = {
+const roleColors: Record<string, string> = {
   USER: "bg-blue-100 text-blue-800",
   AGENT: "bg-green-100 text-green-800",
   ADMIN: "bg-purple-100 text-purple-800",
+  SUPER_ADMIN: "bg-red-100 text-red-800",
 }
 
 export function DashboardLayout({ children }: DashboardLayoutProps) {
@@ -52,14 +60,14 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
   const location = useLocation()
   
   // Hide sidebar on dashboard route and form routes
-  const hideSidebarRoutes = ['/dashboard', '/dashboard/send', '/dashboard/add-money', '/dashboard/withdraw', '/dashboard/cash-out', '/dashboard/cash-in']
+  const hideSidebarRoutes = ['/dashboard', '/dashboard/send', '/dashboard/add-money', '/dashboard/withdraw', '/dashboard/cash-out', '/dashboard/cash-in', '/dashboard/admin/add-money', '/dashboard/admin/transfer-to-agent']
   const isDashboardRoute = hideSidebarRoutes.includes(location.pathname)
 
   if (!user) {
     return null; // This should not happen as ProtectedRoute should handle this
   }
 
-  const currentNavItems = navigationItems[user.role]
+  const currentNavItems = navigationItems[user.role] || []
   const displayName = user.name || user.email?.split('@')[0] || 'User'
   const displayPhone = user.phoneNumber || user.email || 'No phone'
   const displayRole = user.role
@@ -106,8 +114,8 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
             <p className="text-sm text-muted-foreground truncate">{displayPhone}</p>
           </div>
         </div>
-        <Badge className={`w-full justify-center text-base py-2 ${roleColors[displayRole]}`}>
-          {displayRole.charAt(0).toUpperCase() + displayRole.slice(1)}
+        <Badge className={`w-full justify-center text-base py-2 ${roleColors[displayRole] || 'bg-gray-100 text-gray-800'}`}>
+          {displayRole.charAt(0).toUpperCase() + displayRole.slice(1).replace('_', ' ')}
         </Badge>
       </div>
     </div>
